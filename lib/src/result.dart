@@ -27,10 +27,10 @@ abstract class Result<S extends Object, F extends Object> {
   /// `Success` or the `defaultValue` if it is `Failure`.
   S getOrDefault(S defaultValue);
 
-  /// Returns the value of [S] if any.
+  /// Returns the value of [Success] or null.
   S? getOrNull();
 
-  /// Returns the value of [F] if any.
+  /// Returns the value of [Failure] or null.
   F? exceptionOrNull();
 
   /// Returns true if the current result is an [Failure].

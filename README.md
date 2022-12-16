@@ -191,12 +191,16 @@ Result<String, Exception> getSomethingPretty() {
 
 <br>
 
-#### Handling the Result with `when` or `fold`:
+#### Handling the Result with `fold`:
+
+Returns the result of onSuccess for the encapsulated value
+if this instance represents `Success` or the result of onError function
+for the encapsulated value if it is `Failure`.
 
 ```dart
 void main() {
     final result = getSomethingPretty();
-     final String message = result.when(
+     final String message = result.fold(
         (success) {
           // handle the success here
           return "success";
@@ -209,17 +213,17 @@ void main() {
 
 }
 ```
-** OBS: As we are going through a transition process, the `when` and `fold` syntax are identical. 
-Use whichever one you feel most comfortable with and help us figure out which one should remain in the pack.
 
-#### Handling the Result with `get`
+#### Handling the Result with `getOrThrow`
+
+Returns the success value as a throwing expression.
 
 ```dart
 void main() {
     final result = getSomethingPretty();
 
     try {
-     final value = result.get();
+     final value = result.getOrThrow();
     } on Exception catch(e){
       // e
     }
@@ -229,14 +233,39 @@ void main() {
 
 #### Handling the Result with `getOrNull`
 
+Returns the value of [Success] or null.
+
 ```dart
 void main() {
     final result = getSomethingPretty();
+    result.getOrNull();
+}
 
-    String? mySuccessResult;
-    if (result.isSuccess()) {
-      mySuccessResult = result.getOrNull();
-    }
+```
+
+#### Handling the Result with `getOrElse`
+
+Returns the encapsulated value if this instance represents `Success`
+or the result of `onFailure` function for
+the encapsulated a `Failure` value.
+
+```dart
+void main() {
+    final result = getSomethingPretty();
+    result.getOrElse((failure) => 'OK');
+}
+
+```
+
+#### Handling the Result with `getOrDefault`
+
+Returns the encapsulated value if this instance represents
+`Success` or the `defaultValue` if it is `Failure`.
+
+```dart
+void main() {
+    final result = getSomethingPretty();
+    result.getOrDefault('OK');
 }
 
 ```
@@ -244,20 +273,21 @@ void main() {
 
 #### Handling the Result with `exceptionOrNull`
 
+Returns the value of [Failure] or null.
+
 ```dart
 void main() {
     final result = getSomethingPretty();
-
-    Exception? myException;
-    if (result.isFailure()) {
-      myException = result.exceptionOrNull();
-    }
+    result.exceptionOrNull();
 }
 ```
 
 ### Transforming a Result
 
 #### Mapping success value with `map`
+
+Returns a new `Result`, mapping any `Success` value
+using the given transformation.
 
 ```dart
 void main() {
@@ -270,6 +300,9 @@ void main() {
 
 #### Mapping failure value with `mapError`
 
+Returns a new `Result`, mapping any `Error` value
+using the given transformation.
+
 ```dart
 void main() {
     final result = getResult()
@@ -281,6 +314,10 @@ void main() {
 ```
 
 #### Chain others [Result] by any `Success` value with `flatMap`
+
+
+Returns a new `Result`, mapping any `Success` value
+using the given transformation and unwrapping the produced `Result`.
 
 ```dart
 
@@ -299,6 +336,10 @@ void main() {
 ```
 #### Chain others [Result] by `Failure` value with `flatMapError`
 
+
+Returns a new `Result`, mapping any `Error` value
+using the given transformation and unwrapping the produced `Result`.
+
 ```dart
 
 void main() {
@@ -307,7 +348,23 @@ void main() {
 }
 ```
 
+#### Resolve [Result] by `Failure` value with `recover`
+
+Returns the encapsulated `Result` of the given transform function
+applied to the encapsulated a `Failure` or the original
+encapsulated value if it is success.
+
+```dart
+
+void main() {
+    final result = getNumberResult()
+        .recover((f) => Success('Resolved!'));
+}
+```
+
 #### Add a pure `Success` value with `pure`
+
+Change the [Success] value.
 
 ```dart
 void main() {
@@ -322,6 +379,8 @@ void main() {
 
 #### Add a pure `Failure` value with `pureError`
 
+Change the [Failure] value.
+
 ```dart
 void main() {
     final result = getSomethingPretty().pureError(10);
@@ -331,6 +390,9 @@ void main() {
 }
 ```
 #### Swap a `Result` with `swap`
+
+Swap the values contained inside the [Success] and [Failure]
+of this [Result].
 
 ```dart
 void main() {
