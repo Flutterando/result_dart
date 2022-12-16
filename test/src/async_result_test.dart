@@ -119,4 +119,16 @@ void main() {
       expect(result.exceptionOrNull(), completion(0));
     });
   });
+
+  group('get', () {
+    test('Success', () {
+      final result = const Success<int, String>(0).toAsyncResult();
+      expect(result.get(), completion(0));
+    });
+
+    test('Error', () {
+      final result = const Failure<String, int>(0).toAsyncResult();
+      expect(result.get(), throwsA(0));
+    });
+  });
 }
