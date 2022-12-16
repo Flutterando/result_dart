@@ -77,7 +77,7 @@
 
 TODO: DESCRIÇÃO MAIS LONGA DO FUNCIONAMENTO DO PACKAGE
 
-<i>This project is distributed under the MIT License. See `LICENSE.txt` for more information.
+<i>This project is distributed under the MIT License. See `LICENSE` for more information.
 </i>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
