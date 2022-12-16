@@ -1,7 +1,7 @@
-name: multiple_result
-description: Multiple results for dart. Inspired by dartz's Either and Kotlin's sealed classes
-version: 3.2.0
-repository: https://github.com/higorlapa/result
+name: result_dart
+description: Result for dart. It is an implementation based on Kotlin Result and Swift Result.
+version: 1.0.0
+repository: https://github.com/Flutterando/result_dart
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
@@ -11,4 +11,4 @@ dependencies:
 
 dev_dependencies:
   test: any
-  effective_dart: ^1.3.2
+  flutterando_analysis: ^0.0.1+2
