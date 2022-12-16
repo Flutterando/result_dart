@@ -1,4 +1,4 @@
-# multiple_result
+# result_dart
 
 Result package for dart inspired by the work of [dartz](https://pub.dev/packages/dartz)'s Either and Kotlin's sealed classes.
 

@@ -1,4 +1,4 @@
-library multiple_result;
+library result_dart;
 
 export 'src/async_result.dart';
 export 'src/function.dart';

@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:multiple_result/multiple_result.dart';
+import 'package:result_dart/result_dart.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -348,8 +348,7 @@ class MyException implements Exception {
   int get hashCode => message.hashCode;
 
   @override
-  bool operator ==(Object other) =>
-      other is MyException && other.message == message;
+  bool operator ==(Object other) => other is MyException && other.message == message;
 }
 
 @immutable

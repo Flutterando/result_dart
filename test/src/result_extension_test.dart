@@ -1,5 +1,5 @@
-import 'package:multiple_result/src/result.dart';
-import 'package:multiple_result/src/result_extension.dart';
+import 'package:result_dart/src/result.dart';
+import 'package:result_dart/src/result_extension.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -1,4 +1,4 @@
-import '../multiple_result.dart';
+import '../result_dart.dart';
 
 /// Adds methods for converting any object
 /// into a `Result` type (`Success` or `Error`).

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:multiple_result/multiple_result.dart';
+import 'package:result_dart/result_dart.dart';
 
 void main(List<String> args) {
   final result = getTerminalInput() //

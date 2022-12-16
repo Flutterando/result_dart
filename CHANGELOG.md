@@ -29,7 +29,7 @@ That's why we added 2 specific operators for `Result` of `Error`:
    2. `pureError`
 
 * **Welcome `fold`**:<br>
-`multiple_result` is a proposal based on `Either` from `dartz`, `sealed class` from `Koltin`, in addition to the `Result` objects seen in `Swift` and `Kotlin`. Some developers might be uncomfortable without `fold`. That's why we are bringing `fold` as an alias of `when`, that is, both `when` and `fold` do exactly the same thing!<br>
+`result_dart` is a proposal based on `Either` from `dartz`, `sealed class` from `Koltin`, in addition to the `Result` objects seen in `Swift` and `Kotlin`. Some developers might be uncomfortable without `fold`. That's why we are bringing `fold` as an alias of `when`, that is, both `when` and `fold` do exactly the same thing!<br>
 Help us figure out which one to remove in the near future.
 
 * **SWAP**:<br>
@@ -102,7 +102,7 @@ Thanks to [Jacob](https://github.com/jacobaraujo7)
 ## [1.0.1] - 03/26/2021
 
 * Adds documentation
-* Changes library to multiple_result
+* Changes library to result_dart
 
 ## [1.0.0] - 03/23/2021
 
