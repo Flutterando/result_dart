@@ -28,11 +28,11 @@
 
 <div align='center'>
 
-[![Version](https://img.shields.io/github/v/release/flutterando/asuka?style=plastic)](https://pub.dev/packages/result)
-[![Pub Points](https://img.shields.io/pub/points/asuka?label=pub%20points&style=plastic)](https://pub.dev/packages/asuka/score)
+[![Version](https://img.shields.io/github/v/release/flutterando/asuka?style=plastic)](https://pub.dev/packages/result_dart)
+[![Pub Points](https://img.shields.io/pub/points/result_dart?label=pub%20points&style=plastic)](https://pub.dev/packages/result_dart/score)
 [![Flutterando Analysis](https://img.shields.io/badge/style-flutterando__analysis-blueviolet?style=plastic)](https://pub.dev/packages/flutterando_analysis/)
 
-[![Pub Publisher](https://img.shields.io/pub/publisher/asuka?style=plastic)](https://pub.dev/publishers/flutterando.com.br/packages)
+[![Pub Publisher](https://img.shields.io/pub/publisher/result_dart?style=plastic)](https://pub.dev/publishers/flutterando.com.br/packages)
 
 
 </div>
