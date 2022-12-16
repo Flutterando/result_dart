@@ -15,7 +15,9 @@ extension AsyncResultExtension<S, E> on AsyncResult<S, E> {
 
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation and unwrapping the produced `Result`.
-  AsyncResult<S, W> flatMapError<W>(FutureOr<Result<S, W>> Function(E error) fn) {
+  AsyncResult<S, W> flatMapError<W>(
+    FutureOr<Result<S, W>> Function(E error) fn,
+  ) {
     return then((result) => result.when(Success.new, fn));
   }
 

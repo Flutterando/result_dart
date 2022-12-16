@@ -50,8 +50,8 @@ void main() {
   });
 
   test(
-      'Given an error result'
-      'When getting the value through when'
+      'Given an error result '
+      'When getting the value through when '
       'should return the value of the error function', () {
     final result = useCase(returnError: true);
 
@@ -65,7 +65,7 @@ void main() {
 
   test(
       'Given a success result, '
-      'When getting the result though when'
+      'When getting the result though when '
       'should return the value of the success function', () {
     final result = useCase();
 
@@ -77,7 +77,8 @@ void main() {
     expect(value, 2);
   });
 
-  test('''Given a success result, 
+  test('''
+Given a success result, 
         When getting the result through tryGetSuccess, 
         should return the success value''', () {
     final result = useCase();
@@ -91,7 +92,8 @@ void main() {
     expect(result.isError(), isFalse);
   });
 
-  test(''' Given an error result, 
+  test('''
+ Given an error result, 
           When getting the result through tryGetSuccess, 
           should return null ''', () {
     final result = useCase(returnError: true);
@@ -104,7 +106,8 @@ void main() {
     expect(successResult?.value, null);
   });
 
-  test(''' Given an error result, 
+  test('''
+ Given an error result, 
   When getting the result through the tryGetError, 
   should return the error value
   ''', () {
@@ -120,7 +123,7 @@ void main() {
   });
 
   group(
-    "onSuccess and onError",
+    'onSuccess and onError',
     () {
       test('''
        Given a result of SuccessResult type, 
@@ -177,23 +180,23 @@ void main() {
   );
 
   test('equatable', () {
-    expect(Success(1) == Success(1), isTrue);
-    expect(Success(1).hashCode == Success(1).hashCode, isTrue);
+    expect(const Success(1) == const Success(1), isTrue);
+    expect(const Success(1).hashCode == const Success(1).hashCode, isTrue);
 
-    expect(Error(1) == Error(1), isTrue);
-    expect(Error(1).hashCode == Error(1).hashCode, isTrue);
+    expect(const Error(1) == const Error(1), isTrue);
+    expect(const Error(1).hashCode == const Error(1).hashCode, isTrue);
   });
 
   group('Map', () {
     test('Success', () {
-      final result = Success(4);
+      const result = Success(4);
       final result2 = result.map((success) => '=' * success);
 
       expect(result2.tryGetSuccess(), '====');
     });
 
     test('Error', () {
-      final result = Error<String, int>(4);
+      const result = Error<String, int>(4);
       final result2 = result.map((success) => 'change');
 
       expect(result2.tryGetSuccess(), isNull);
@@ -203,7 +206,7 @@ void main() {
 
   group('MapError', () {
     test('Success', () {
-      final result = Success<int, int>(4);
+      const result = Success<int, int>(4);
       final result2 = result.mapError((error) => '=' * error);
 
       expect(result2.tryGetSuccess(), 4);
@@ -211,7 +214,7 @@ void main() {
     });
 
     test('Error', () {
-      final result = Error<String, int>(4);
+      const result = Error<String, int>(4);
       final result2 = result.mapError((error) => 'change');
 
       expect(result2.tryGetSuccess(), isNull);
@@ -221,14 +224,14 @@ void main() {
 
   group('flatMap', () {
     test('Success', () {
-      final result = Success<int, int>(4);
+      const result = Success<int, int>(4);
       final result2 = result.flatMap((success) => Success('=' * success));
 
       expect(result2.tryGetSuccess(), '====');
     });
 
     test('Error', () {
-      final result = Error<String, int>(4);
+      const result = Error<String, int>(4);
       final result2 = result.flatMap(Success.new);
 
       expect(result2.tryGetSuccess(), isNull);
@@ -238,14 +241,14 @@ void main() {
 
   group('flatMapError', () {
     test('Error', () {
-      final result = Error<int, int>(4);
+      const result = Error<int, int>(4);
       final result2 = result.flatMapError((error) => Error('=' * error));
 
       expect(result2.tryGetError(), '====');
     });
 
     test('Success', () {
-      final result = Success<int, String>(4);
+      const result = Success<int, String>(4);
       final result2 = result.flatMapError(Error.new);
 
       expect(result2.tryGetError(), isNull);
@@ -255,7 +258,7 @@ void main() {
 
   group('pure', () {
     test('Success', () {
-      final result = Success<int, int>(4) //
+      final result = const Success<int, int>(4) //
           .pure(6)
           .map((success) => '=' * success);
 
@@ -263,7 +266,7 @@ void main() {
     });
 
     test('Error', () {
-      final result = Error<String, int>(4).pure(6);
+      final result = const Error<String, int>(4).pure(6);
 
       expect(result.tryGetSuccess(), isNull);
       expect(result.tryGetError(), 4);
@@ -272,7 +275,7 @@ void main() {
 
   group('pureError', () {
     test('Error', () {
-      final result = Error<int, int>(4) //
+      final result = const Error<int, int>(4) //
           .pureError(6)
           .mapError((error) => '=' * error);
 
@@ -280,7 +283,7 @@ void main() {
     });
 
     test('Success', () {
-      final result = Success<int, String>(4).pureError(6);
+      final result = const Success<int, String>(4).pureError(6);
 
       expect(result.tryGetError(), isNull);
       expect(result.tryGetSuccess(), 4);
@@ -288,21 +291,21 @@ void main() {
   });
 
   test('toAsyncResult', () {
-    final result = Success(0);
+    const result = Success(0);
 
     expect(result.toAsyncResult(), isA<AsyncResult>());
   });
 
   group('swap', () {
     test('Success to Error', () {
-      final result = Success<int, String>(0);
+      const result = Success<int, String>(0);
       final swap = result.swap();
 
       expect(swap.tryGetError(), 0);
     });
 
     test('Error to Success', () {
-      final result = Error<String, int>(0);
+      const result = Error<String, int>(0);
       final swap = result.swap();
 
       expect(swap.tryGetSuccess(), 0);
@@ -311,14 +314,14 @@ void main() {
 
   group('fold', () {
     test('Success', () {
-      final result = Success<int, String>(0);
+      const result = Success<int, String>(0);
       final futureValue = result.fold(id, (e) => -1);
       expect(futureValue, 0);
     });
 
     test('Error', () {
-      final result = Error<String, int>(0);
-      final futureValue = result.fold(((success) => -1), identity);
+      const result = Error<String, int>(0);
+      final futureValue = result.fold((success) => -1, identity);
       expect(futureValue, 0);
     });
   });
@@ -331,9 +334,9 @@ Result<Unit, MyException> getMockedSuccessResult() {
 class MyUseCase {
   Result<MyResult, MyException> call({bool returnError = false}) {
     if (returnError) {
-      return Error(MyException('something went wrong'));
+      return const Error(MyException('something went wrong'));
     } else {
-      return Success(MyResult('nice'));
+      return const Success(MyResult('nice'));
     }
   }
 }
@@ -342,18 +345,19 @@ class MyUseCase {
 class MyException implements Exception {
   final String message;
 
-  MyException(this.message);
+  const MyException(this.message);
 
   @override
   int get hashCode => message.hashCode;
 
   @override
-  bool operator ==(Object other) => other is MyException && other.message == message;
+  bool operator ==(Object other) => //
+      other is MyException && other.message == message;
 }
 
 @immutable
 class MyResult {
-  MyResult(this.value);
+  const MyResult(this.value);
 
   final String value;
 

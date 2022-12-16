@@ -11,4 +11,4 @@ dependencies:
 
 dev_dependencies:
   test: any
-  flutterando_analysis: ^0.0.1+2
+  flutterando_analysis: ^0.0.2

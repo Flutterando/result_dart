@@ -21,7 +21,7 @@ extension ResultObjectExtension<W> on W {
     return Error<S, W>(this);
   }
 
-  /// Convert the object to a `Result` type [SUccess].
+  /// Convert the object to a `Result` type [Success].
   ///
   /// Will throw an error if used on a `Result` or `Future` instance.
   Success<W, E> toSuccess<E>() {

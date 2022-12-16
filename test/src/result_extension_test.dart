@@ -13,7 +13,7 @@ void main() {
     });
 
     test('with result type', () {
-      Result<int, String> result = 'error'.toError();
+      final Result<int, String> result = 'error'.toError();
 
       expect(result, isA<Result<int, String>>());
       expect(result.tryGetError(), isA<String>());
@@ -21,7 +21,7 @@ void main() {
     });
 
     test('throw AssertException if is a Result object', () {
-      Result<int, String> result = 'error'.toError();
+      final Result<int, String> result = 'error'.toError();
       expect(result.toError, throwsA(isA<AssertionError>()));
     });
 
@@ -39,7 +39,7 @@ void main() {
     });
 
     test('with result type', () {
-      Result<String, int> result = 'success'.toSuccess();
+      final Result<String, int> result = 'success'.toSuccess();
 
       expect(result, isA<Result<String, int>>());
       expect(result.tryGetSuccess(), 'success');

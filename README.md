@@ -1,13 +1,6 @@
 # result_dart
 
-Result package for dart inspired by the work of [dartz](https://pub.dev/packages/dartz)'s Either and Kotlin's sealed classes.
-
-This package is perfect to those of you who just want the Multiple results
-functionality from dartz. 👌
-
-##### Old version:
-
-If you're looking for a non null-safety version, you can find it in [here](https://github.com/higorlapa/result/tree/no-null-safety)
+It is an implementation based on `Kotlin Result` and `Swift Result`.
 
 
 ## Use **Result** type:
