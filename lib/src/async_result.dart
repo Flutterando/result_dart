@@ -3,19 +3,19 @@ import 'dart:async';
 import '../result_dart.dart';
 
 /// `AsyncResult<S, E>` represents an asynchronous computation.
-typedef AsyncResult<S, F> = Future<Result<S, F>>;
+typedef AsyncResult<S extends Object, F extends Object> = Future<Result<S, F>>;
 
 /// `AsyncResult<S, E>` represents an asynchronous computation.
-extension AsyncResultExtension<S, F> on AsyncResult<S, F> {
+extension AsyncResultExtension<S extends Object, F extends Object> on AsyncResult<S, F> {
   /// Returns a new `Result`, mapping any `Success` value
   /// using the given transformation and unwrapping the produced `Result`.
-  AsyncResult<W, F> flatMap<W>(FutureOr<Result<W, F>> Function(S success) fn) {
+  AsyncResult<W, F> flatMap<W extends Object>(FutureOr<Result<W, F>> Function(S success) fn) {
     return then((result) => result.when(fn, Failure.new));
   }
 
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation and unwrapping the produced `Result`.
-  AsyncResult<S, W> flatMapError<W>(
+  AsyncResult<S, W> flatMapError<W extends Object>(
     FutureOr<Result<S, W>> Function(F error) fn,
   ) {
     return then((result) => result.when(Success.new, fn));
@@ -23,23 +23,23 @@ extension AsyncResultExtension<S, F> on AsyncResult<S, F> {
 
   /// Returns a new `AsyncResult`, mapping any `Success` value
   /// using the given transformation.
-  AsyncResult<W, F> map<W>(W Function(S success) fn) {
+  AsyncResult<W, F> map<W extends Object>(W Function(S success) fn) {
     return then((result) => result.map(fn));
   }
 
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation.
-  AsyncResult<S, W> mapError<W>(W Function(F error) fn) {
+  AsyncResult<S, W> mapError<W extends Object>(W Function(F error) fn) {
     return then((result) => result.mapError(fn));
   }
 
   /// Change a [Success] value.
-  AsyncResult<W, F> pure<W>(W success) {
+  AsyncResult<W, F> pure<W extends Object>(W success) {
     return then((result) => result.pure(success));
   }
 
   /// Change the [Failure] value.
-  AsyncResult<S, W> pureError<W>(W error) {
+  AsyncResult<S, W> pureError<W extends Object>(W error) {
     return mapError((_) => error);
   }
 

@@ -268,6 +268,18 @@ Given a success result,
       expect(futureValue, 0);
     });
   });
+
+  group('get', () {
+    test('Success', () {
+      const result = Success<int, String>(0);
+      expect(result.get(), 0);
+    });
+
+    test('Error', () {
+      const result = Failure<String, int>(0);
+      expect(result.get, throwsA(0));
+    });
+  });
 }
 
 Result<Unit, MyException> getMockedSuccessResult() {

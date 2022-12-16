@@ -1,4 +1,4 @@
-name: Dart PubDev upload
+name: Dart CI
 on:
   pull_request:
     branches:        
