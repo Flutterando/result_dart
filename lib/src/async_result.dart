@@ -13,7 +13,7 @@ extension AsyncResultExtension<S extends Object, F extends Object> //
   AsyncResult<W, F> flatMap<W extends Object>(
     FutureOr<Result<W, F>> Function(S success) fn,
   ) {
-    return then((result) => result.when(fn, Failure.new));
+    return then((result) => result.fold(fn, Failure.new));
   }
 
   /// Returns a new `Result`, mapping any `Error` value
@@ -21,7 +21,7 @@ extension AsyncResultExtension<S extends Object, F extends Object> //
   AsyncResult<S, W> flatMapError<W extends Object>(
     FutureOr<Result<S, W>> Function(F error) fn,
   ) {
-    return then((result) => result.when(Success.new, fn));
+    return then((result) => result.fold(Success.new, fn));
   }
 
   /// Returns a new `AsyncResult`, mapping any `Success` value
@@ -52,30 +52,14 @@ extension AsyncResultExtension<S extends Object, F extends Object> //
     return then((result) => result.swap());
   }
 
-  /// Return the Future result in one of these functions.
-  ///
-  /// if the result is an error, it will be returned in
-  /// [whenError],
-  /// if it is a success it will be returned in [whenSuccess].
-  /// <br><br>
-  /// Same of `fold`
-  Future<W> when<W>(
-    W Function(S success) whenSuccess,
-    W Function(F error) whenError,
-  ) {
-    return then((result) => result.when(whenSuccess, whenError));
-  }
-
   /// Returns the Future result of onSuccess for the encapsulated value
   /// if this instance represents `Success` or the result of onError function
   /// for the encapsulated value if it is `Error`.
-  /// <br><br>
-  /// Same of `when`
   Future<W> fold<W>(
     W Function(S success) onSuccess,
     W Function(F error) onError,
   ) {
-    return when<W>(onSuccess, onError);
+    return then<W>((result) => result.fold(onSuccess, onError));
   }
 
   /// Returns the future value of [S] if any.
@@ -99,7 +83,27 @@ extension AsyncResultExtension<S extends Object, F extends Object> //
   }
 
   /// Returns the success value as a throwing expression.
-  Future<S> get() {
-    return then((result) => result.get());
+  Future<S> getOrThrow() {
+    return then((result) => result.getOrThrow());
+  }
+
+  /// Returns the encapsulated value if this instance represents `Success`
+  /// or the result of `onFailure` function for
+  /// the encapsulated a `Failure` value.
+  Future<S> getOrElse(S Function(F) onFailure) {
+    return then((result) => result.getOrElse(onFailure));
+  }
+
+  /// Returns the encapsulated value if this instance represents
+  /// `Success` or the `defaultValue` if it is `Failure`.
+  Future<S> getOrDefault(S defaultValue) {
+    return then((result) => result.getOrDefault(defaultValue));
+  }
+
+  /// Returns the encapsulated `Result` of the given transform function
+  /// applied to the encapsulated a `Failure` or the original
+  /// encapsulated value if it is success.
+  AsyncResult<S, F> recover(Success<S, F> Function(F failure) onFailure) {
+    return then((result) => result.recover(onFailure));
   }
 }

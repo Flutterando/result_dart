@@ -49,34 +49,6 @@ void main() {
     expect(result.exceptionOrNull(), 0);
   });
 
-  test(
-      'Given an error result '
-      'When getting the value through when '
-      'should return the value of the error function', () {
-    final result = useCase(returnError: true);
-
-    final value = result.when(
-      (success) => 2,
-      (error) => 1,
-    );
-
-    expect(value, 1);
-  });
-
-  test(
-      'Given a success result, '
-      'When getting the result though when '
-      'should return the value of the success function', () {
-    final result = useCase();
-
-    final value = result.when(
-      (success) => 2,
-      (error) => 1,
-    );
-
-    expect(value, 2);
-  });
-
   test('''
 Given a success result, 
         When getting the result through tryGetSuccess, 
@@ -269,15 +241,57 @@ Given a success result,
     });
   });
 
-  group('get', () {
+  group('getOrThrow', () {
     test('Success', () {
       const result = Success<int, String>(0);
-      expect(result.get(), 0);
+      expect(result.getOrThrow(), 0);
     });
 
     test('Error', () {
       const result = Failure<String, int>(0);
-      expect(result.get, throwsA(0));
+      expect(result.getOrThrow, throwsA(0));
+    });
+  });
+
+  group('getOrElse', () {
+    test('Success', () {
+      const result = Success<int, String>(0);
+      final value = result.getOrElse((f) => -1);
+      expect(value, 0);
+    });
+
+    test('Error', () {
+      const result = Failure<int, int>(0);
+      final value = result.getOrElse((f) => 2);
+      expect(value, 2);
+    });
+  });
+
+  group('getOrDefault', () {
+    test('Success', () {
+      const result = Success<int, String>(0);
+      final value = result.getOrDefault(-1);
+      expect(value, 0);
+    });
+
+    test('Error', () {
+      const result = Failure<int, int>(0);
+      final value = result.getOrDefault(2);
+      expect(value, 2);
+    });
+  });
+
+  group('recover', () {
+    test('Success', () {
+      final result = const Success<int, String>(0) //
+          .recover((f) => const Success(1));
+      expect(result.getOrThrow(), 0);
+    });
+
+    test('Error', () {
+      final result = const Failure<int, String>('failure') //
+          .recover((f) => const Success(1));
+      expect(result.getOrThrow(), 1);
     });
   });
 }

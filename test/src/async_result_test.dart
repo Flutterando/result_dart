@@ -76,30 +76,16 @@ void main() {
     });
   });
 
-  group('when', () {
-    test('Success', () async {
-      final result = const Success<int, String>(0).toAsyncResult();
-      final futureValue = result.when((success) => success, (e) => -1);
-      expect(futureValue, completion(0));
-    });
-
-    test('Error', () async {
-      final result = const Failure<String, int>(0).toAsyncResult();
-      final futureValue = result.when((success) => -1, (e) => e);
-      expect(futureValue, completion(0));
-    });
-  });
-
   group('fold', () {
     test('Success', () async {
       final result = const Success<int, String>(0).toAsyncResult();
-      final futureValue = result.fold((success) => success, (e) => -1);
+      final futureValue = result.fold(id, (e) => -1);
       expect(futureValue, completion(0));
     });
 
     test('Error', () async {
       final result = const Failure<String, int>(0).toAsyncResult();
-      final futureValue = result.fold((success) => -1, (e) => e);
+      final futureValue = result.fold(identity, (e) => e);
       expect(futureValue, completion(0));
     });
   });
@@ -120,15 +106,59 @@ void main() {
     });
   });
 
-  group('get', () {
+  group('getOrThrow', () {
     test('Success', () {
       final result = const Success<int, String>(0).toAsyncResult();
-      expect(result.get(), completion(0));
+      expect(result.getOrThrow(), completion(0));
     });
 
     test('Error', () {
       final result = const Failure<String, int>(0).toAsyncResult();
-      expect(result.get(), throwsA(0));
+      expect(result.getOrThrow(), throwsA(0));
+    });
+  });
+
+  group('getOrElse', () {
+    test('Success', () {
+      final result = const Success<int, String>(0).toAsyncResult();
+      final value = result.getOrElse((f) => -1);
+      expect(value, completion(0));
+    });
+
+    test('Error', () {
+      final result = const Failure<int, int>(0).toAsyncResult();
+      final value = result.getOrElse((f) => 2);
+      expect(value, completion(2));
+    });
+  });
+
+  group('getOrDefault', () {
+    test('Success', () {
+      final result = const Success<int, String>(0).toAsyncResult();
+      final value = result.getOrDefault(-1);
+      expect(value, completion(0));
+    });
+
+    test('Error', () {
+      final result = const Failure<int, int>(0).toAsyncResult();
+      final value = result.getOrDefault(2);
+      expect(value, completion(2));
+    });
+  });
+
+  group('recover', () {
+    test('Success', () {
+      final result = const Success<int, String>(0) //
+          .toAsyncResult()
+          .recover((f) => const Success(1));
+      expect(result.getOrThrow(), completion(0));
+    });
+
+    test('Error', () {
+      final result = const Failure<int, String>('failure') //
+          .toAsyncResult()
+          .recover((f) => const Success(1));
+      expect(result.getOrThrow(), completion(1));
     });
   });
 }

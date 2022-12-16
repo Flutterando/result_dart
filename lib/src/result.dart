@@ -9,9 +9,6 @@ import 'unit.dart' as type_unit;
 /// as [F] is an error and [S] is a success.
 @sealed
 abstract class Result<S extends Object, F extends Object> {
-  /// Default constructor.
-  const Result();
-
   /// Build a [Result] that returns a [Failure].
   factory Result.success(S s) => Success(s);
 
@@ -19,7 +16,16 @@ abstract class Result<S extends Object, F extends Object> {
   factory Result.failure(F e) => Failure(e);
 
   /// Returns the success value as a throwing expression.
-  S get();
+  S getOrThrow();
+
+  /// Returns the encapsulated value if this instance represents `Success`
+  /// or the result of `onFailure` function for
+  /// the encapsulated a `Failure` value.
+  S getOrElse(S Function(F failure) onFailure);
+
+  /// Returns the encapsulated value if this instance represents
+  /// `Success` or the `defaultValue` if it is `Failure`.
+  S getOrDefault(S defaultValue);
 
   /// Returns the value of [S] if any.
   S? getOrNull();
@@ -33,39 +39,21 @@ abstract class Result<S extends Object, F extends Object> {
   /// Returns true if the current result is a [Success].
   bool isSuccess();
 
-  /// Return the result in one of these functions.
-  ///
-  /// if the result is an error, it will be returned in
-  /// [whenFailure],
-  /// if it is a success it will be returned in [whenSuccess].
-  /// <br><br>
-  /// Same of `fold`
-  W when<W>(
-    W Function(S success) whenSuccess,
-    W Function(F failure) whenFailure,
-  );
-
   /// Returns the result of onSuccess for the encapsulated value
   /// if this instance represents `Success` or the result of onError function
   /// for the encapsulated value if it is `Failure`.
   W fold<W>(
     W Function(S success) onSuccess,
     W Function(F failure) onFailure,
-  ) {
-    return when<W>(onSuccess, onFailure);
-  }
+  );
 
   /// Returns a new `Result`, mapping any `Success` value
   /// using the given transformation.
-  Result<W, F> map<W extends Object>(W Function(S success) fn) {
-    return when((success) => Success(fn(success)), Failure.new);
-  }
+  Result<W, F> map<W extends Object>(W Function(S success) fn);
 
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation.
-  Result<S, W> mapError<W extends Object>(W Function(F error) fn) {
-    return when(Success.new, (error) => Failure(fn(error)));
-  }
+  Result<S, W> mapError<W extends Object>(W Function(F error) fn);
 
   /// Returns a new `Result`, mapping any `Success` value
   /// using the given transformation and unwrapping the produced `Result`.
@@ -78,21 +66,22 @@ abstract class Result<S extends Object, F extends Object> {
   );
 
   /// Change the [Success] value.
-  Result<W, F> pure<W extends Object>(W success) {
-    return map((_) => success);
-  }
+  Result<W, F> pure<W extends Object>(W success);
 
   /// Change the [Failure] value.
-  Result<S, W> pureError<W extends Object>(W error) {
-    return mapError((_) => error);
-  }
+  Result<S, W> pureError<W extends Object>(W error);
 
   /// Return a [AsyncResult].
-  AsyncResult<S, F> toAsyncResult() async => this;
+  AsyncResult<S, F> toAsyncResult();
 
   /// Swap the values contained inside the [Success] and [Failure]
   /// of this [Result].
   Result<F, S> swap();
+
+  /// Returns the encapsulated `Result` of the given transform function
+  /// applied to the encapsulated a `Failure` or the original
+  /// encapsulated value if it is success.
+  Result<S, F> recover(Success<S, F> Function(F failure) onFailure);
 }
 
 /// Success Result.
@@ -100,7 +89,7 @@ abstract class Result<S extends Object, F extends Object> {
 /// return it when the result of a [Result] is
 /// the expected value.
 @immutable
-class Success<S extends Object, F extends Object> extends Result<S, F> {
+class Success<S extends Object, F extends Object> implements Result<S, F> {
   /// Receives the [S] param as
   /// the successful result.
   const Success(
@@ -132,11 +121,11 @@ class Success<S extends Object, F extends Object> extends Result<S, F> {
   }
 
   @override
-  W when<W>(
-    W Function(S success) whenSuccess,
-    W Function(F error) whenFailure,
+  W fold<W>(
+    W Function(S success) onSuccess,
+    W Function(F error) onFailure,
   ) {
-    return whenSuccess(_success);
+    return onSuccess(_success);
   }
 
   @override
@@ -163,9 +152,46 @@ class Success<S extends Object, F extends Object> extends Result<S, F> {
   }
 
   @override
-  S get() {
+  S getOrThrow() {
     return _success;
   }
+
+  @override
+  S getOrElse(S Function(F failure) onFailure) {
+    return _success;
+  }
+
+  @override
+  S getOrDefault(S defaultValue) => _success;
+
+  @override
+  Result<W, F> map<W extends Object>(W Function(S success) fn) {
+    final newSuccess = fn(_success);
+    return Success<W, F>(newSuccess);
+  }
+
+  @override
+  Result<S, W> mapError<W extends Object>(W Function(F error) fn) {
+    return Success<S, W>(_success);
+  }
+
+  @override
+  Result<W, F> pure<W extends Object>(W success) {
+    return map((_) => success);
+  }
+
+  @override
+  Result<S, W> pureError<W extends Object>(W error) {
+    return Success<S, W>(_success);
+  }
+
+  @override
+  Result<S, F> recover(Success<S, F> Function(F failure) onFailure) {
+    return Success<S, F>(_success);
+  }
+
+  @override
+  AsyncResult<S, F> toAsyncResult() async => this;
 }
 
 /// Error Result.
@@ -173,7 +199,7 @@ class Success<S extends Object, F extends Object> extends Result<S, F> {
 /// return it when the result of a [Result] is
 /// not the expected value.
 @immutable
-class Failure<S extends Object, F extends Object> extends Result<S, F> {
+class Failure<S extends Object, F extends Object> implements Result<S, F> {
   /// Receives the [F] param as
   /// the error result.
   const Failure(this._failure);
@@ -202,11 +228,11 @@ class Failure<S extends Object, F extends Object> extends Result<S, F> {
       other is Failure && other._failure == _failure;
 
   @override
-  W when<W>(
-    W Function(S succcess) whenSuccess,
-    W Function(F failure) whenFailure,
+  W fold<W>(
+    W Function(S succcess) onSuccess,
+    W Function(F failure) onFailure,
   ) {
-    return whenFailure(_failure);
+    return onFailure(_failure);
   }
 
   @override
@@ -233,7 +259,44 @@ class Failure<S extends Object, F extends Object> extends Result<S, F> {
   }
 
   @override
-  S get() {
+  S getOrThrow() {
     throw _failure;
   }
+
+  @override
+  S getOrElse(S Function(F failure) onFailure) {
+    return onFailure(_failure);
+  }
+
+  @override
+  S getOrDefault(S defaultValue) => defaultValue;
+
+  @override
+  Result<W, F> map<W extends Object>(W Function(S success) fn) {
+    return Failure<W, F>(_failure);
+  }
+
+  @override
+  Result<S, W> mapError<W extends Object>(W Function(F failure) fn) {
+    final newFailure = fn(_failure);
+    return Failure(newFailure);
+  }
+
+  @override
+  Result<W, F> pure<W extends Object>(W success) {
+    return Failure<W, F>(_failure);
+  }
+
+  @override
+  Result<S, W> pureError<W extends Object>(W error) {
+    return mapError((failure) => error);
+  }
+
+  @override
+  Result<S, F> recover(Success<S, F> Function(F failure) onFailure) {
+    return onFailure(_failure);
+  }
+
+  @override
+  AsyncResult<S, F> toAsyncResult() async => this;
 }
