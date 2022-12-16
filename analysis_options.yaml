@@ -1,0 +1,6 @@
+include: package:effective_dart/analysis_options.yaml
+
+linter:
+  rules:
+    avoid_catches_without_on_clauses: false
+    use_setters_to_change_properties: false

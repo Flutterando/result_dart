@@ -1,0 +1,34 @@
+name: Dart PubDev upload
+on:
+  pull_request:
+    branches:        
+    - 'main' 
+
+jobs:
+  upload-to-pubdev:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+   
+    - uses: dart-lang/setup-dart@v1.3
+      with:
+        sdk: 2.17.5
+    - name: Install dependencies
+      run: dart pub get
+
+    - name: Analyze project source
+      run: dart analyze
+
+    - name: Install coverage
+      run: dart pub global activate coverage
+    
+    - name: Run tests with coverage
+      run: dart pub global run coverage:test_with_coverage
+    
+    - name: Report code coverage
+      uses: zgosalvez/github-actions-report-lcov@v2
+      with:
+        coverage-files: coverage/lcov.*.info
+        minimum-coverage: 100
+        artifact-name: code-coverage-report
+        github-token: ${{ secrets.GITHUB_TOKEN }}
