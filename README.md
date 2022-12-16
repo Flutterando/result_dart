@@ -12,10 +12,10 @@
 
   <p align="center">
     This package aims to create an implemetation of <b>Kotlin's and Swift's Result class and own operators</b>.
-    Inspired by Higor Lapa's <a href='https://pub.dev/packages/multiple_result'>multiple_result</a> package, the DartZ package and the FpDart package.  
+    Inspired by Higor Lapa's <a href='https://pub.dev/packages/multiple_result'>multiple_result</a> package, the `dartz` package and the `fpdart` package.  
     <br />
     <!-- Put the link for the documentation here -->
-    <a href="https://pub.dev/publishers/flutterando.com.br/packages"><strong>Explore the docs »</strong></a>
+    <a href="https://pub.dev/documentation/result_dart/latest/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <!-- Disable unused links with with comments -->
@@ -396,11 +396,12 @@ final state = await fetch()
 e 🚧 para o que está sendo trabalhado ---->
 ## Features
 
-- ✅ Main Feature
-- ✅ Side Feature
-- ✅ Other Feature
-- 🚧 Documentation
-- 🚧 Other Features 
+- ✅ Result implementation.
+- ✅ Result`s operators(map, flatMap, mapError, flatMapError, swap, when, fold, getOrNull, exceptionOrNull, isSuccess, isError).
+- ✅ AsyncResult implementation.
+- ✅ AsyncResult`s operators(map, flatMap, mapError, flatMapError, swap, when, fold, getOrNull, exceptionOrNull, isSuccess, isError).
+- ✅ Auxiliar functions (id, identity, success, failure).
+- ✅ Unit type.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
