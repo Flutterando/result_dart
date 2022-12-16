@@ -75,7 +75,10 @@
 
 <!-- PROJECT DESCRIPTION -->
 
-TODO: DESCRIÇÃO MAIS LONGA DO FUNCIONAMENTO DO PACKAGE
+Overruns are common in design, and modern architectures always designate a place to handle failures.
+This means dramatically decreasing try/catch usage and keeping treatments in one place.
+But the other layers of code need to know about the two main values `[Success, Failure]`. The solution is in
+`Result` class pattern implemented in `Kotlin` and `Swift` and now also in `Dart` via this package(`result_dart`).
 
 <i>This project is distributed under the MIT License. See `LICENSE` for more information.
 </i>

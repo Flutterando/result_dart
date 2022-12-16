@@ -73,7 +73,9 @@ abstract class Result<S extends Object, F extends Object> {
 
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation and unwrapping the produced `Result`.
-  Result<S, W> flatMapError<W extends Object>(Result<S, W> Function(F error) fn);
+  Result<S, W> flatMapError<W extends Object>(
+    Result<S, W> Function(F error) fn,
+  );
 
   /// Change the [Success] value.
   Result<W, F> pure<W extends Object>(W success) {
@@ -149,7 +151,9 @@ class Success<S extends Object, F extends Object> extends Result<S, F> {
   }
 
   @override
-  Result<S, W> flatMapError<W extends Object>(Result<S, W> Function(F failure) fn) {
+  Result<S, W> flatMapError<W extends Object>(
+    Result<S, W> Function(F failure) fn,
+  ) {
     return Success<S, W>(_success);
   }
 
@@ -217,7 +221,9 @@ class Failure<S extends Object, F extends Object> extends Result<S, F> {
   }
 
   @override
-  Result<S, W> flatMapError<W extends Object>(Result<S, W> Function(F failure) fn) {
+  Result<S, W> flatMapError<W extends Object>(
+    Result<S, W> Function(F failure) fn,
+  ) {
     return fn(_failure);
   }
 

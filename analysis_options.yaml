@@ -4,3 +4,4 @@ linter:
   rules:
     avoid_catches_without_on_clauses: false
     use_setters_to_change_properties: false
+    only_throw_errors: false
