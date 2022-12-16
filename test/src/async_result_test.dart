@@ -106,14 +106,14 @@ void main() {
 
   group('tryGetSuccess and tryGetError', () {
     test('Success', () async {
-      final result = success<int, String>(0).toAsyncResult();
+      final result = const Success<int, String>(0).toAsyncResult();
 
       expect(result.isSuccess(), completion(true));
       expect(result.getOrNull(), completion(0));
     });
 
     test('Error', () async {
-      final result = failure<String, int>(0).toAsyncResult();
+      final result = const Failure<String, int>(0).toAsyncResult();
 
       expect(result.isError(), completion(true));
       expect(result.exceptionOrNull(), completion(0));

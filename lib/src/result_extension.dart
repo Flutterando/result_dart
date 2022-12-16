@@ -2,11 +2,11 @@ import '../result_dart.dart';
 
 /// Adds methods for converting any object
 /// into a `Result` type (`Success` or `Failure`).
-extension ResultObjectExtension<W> on W {
+extension ResultObjectExtension<W extends Object> on W {
   /// Convert the object to a `Result` type [Failure].
   ///
   /// Will throw an error if used on a `Result` or `Future` instance.
-  Failure<S, W> toFailure<S>() {
+  Failure<S, W> toFailure<S extends Object>() {
     assert(
       this is! Result,
       'Don`t use the "toError()" method '
@@ -24,7 +24,7 @@ extension ResultObjectExtension<W> on W {
   /// Convert the object to a `Result` type [Success].
   ///
   /// Will throw an error if used on a `Result` or `Future` instance.
-  Success<W, F> toSuccess<F>() {
+  Success<W, F> toSuccess<F extends Object>() {
     assert(
       this is! Result,
       'Don`t use the "toSuccess()" method '

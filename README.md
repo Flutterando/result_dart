@@ -142,9 +142,6 @@ return Success('Something Pretty');
 // Using Result factory
 return Result.success('Something Pretty');
 
-// Using function
-return success('Something Pretty')
-
 // Using extensions
 return 'Something Pretty'.toSuccess();
 ```
@@ -157,9 +154,6 @@ return Failure(Exception('something ugly happened...'));
 
 // Using Result factory
 return Result.failure('something ugly happened...');
-
-// Using function
-return failure('something ugly happened...');
 
 // Using extensions
 return 'something ugly happened...'.toFailure();
@@ -216,6 +210,21 @@ void main() {
 ```
 ** OBS: As we are going through a transition process, the `when` and `fold` syntax are identical. 
 Use whichever one you feel most comfortable with and help us figure out which one should remain in the pack.
+
+#### Handling the Result with `get`
+
+```dart
+void main() {
+    final result = getSomethingPretty();
+
+    try {
+     final value = result.get();
+    } on Exception catch(e){
+      // e
+    }
+}
+
+```
 
 #### Handling the Result with `getOrNull`
 
