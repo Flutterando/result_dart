@@ -28,7 +28,7 @@
 
 <div align='center'>
 
-[![Version](https://img.shields.io/github/v/release/flutterando/result_dart?style=plastic)](https://pub.dev/packages/result_dart)
+[![Version](https://img.shields.io/github/v/release/Flutterando/result_dart?style=plastic)](https://pub.dev/packages/result_dart)
 [![Pub Points](https://img.shields.io/pub/points/result_dart?label=pub%20points&style=plastic)](https://pub.dev/packages/result_dart/score)
 [![Flutterando Analysis](https://img.shields.io/badge/style-flutterando__analysis-blueviolet?style=plastic)](https://pub.dev/packages/flutterando_analysis/)
 
