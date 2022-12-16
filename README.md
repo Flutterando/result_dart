@@ -67,9 +67,9 @@
 <!-- PROJECT EXAMPLE (IMAGE) -->
 
 <br>
-<Center>
+<!-- <Center>
 <img src="https://raw.githubusercontent.com/Flutterando/README-Template/master/readme_assets/project-image.png" alt="Project Screenshot" width="400">
-</Center>
+</Center> -->
 
 <br>
 
