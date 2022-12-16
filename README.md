@@ -11,7 +11,7 @@
   </a> -->
 
   <p align="center">
-    This package aims to create an implemetation of <b>Kotlin's and Swift's Result function</b>.
+    This package aims to create an implemetation of <b>Kotlin's and Swift's Result class and own operators</b>.
     Inspired by Higor Lapa's <a href='https://pub.dev/packages/multiple_result'>multiple_result</a> package, the DartZ package and the FpDart package.  
     <br />
     <!-- Put the link for the documentation here -->
