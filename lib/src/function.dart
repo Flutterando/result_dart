@@ -1,3 +1,5 @@
+import '../result_dart.dart';
+
 /// Returns the given `a`.
 ///
 /// Same as `id`.
@@ -33,3 +35,13 @@ T identity<T>(T a) => a;
 /// final withId = result.when((success) => '$success', id);
 /// ```
 T id<T>(T a) => a;
+
+/// Return a [Success]
+Result<S, F> success<S, F>(S value) {
+  return Result.success(value);
+}
+
+/// Return a [Failure]
+Result<S, F> failure<S, F>(F value) {
+  return Result.failure(value);
+}
