@@ -103,7 +103,7 @@ To get your_package in your project follow either of the instructions below:
 a) Add your_package as a dependency in your Pubspec.yaml:
  ```yaml
    dependencies:
-     result_dart: ^1.0.0
+     result_dart: x.x.x
 ``` 
 
 b) Use Dart Pub:
@@ -121,7 +121,7 @@ In the return of a function, set it to return a Result type;
 ```dart
 Result getSomethingPretty();
 ```
-then add the Success and the Error types.
+then add the Success and the Failure types.
 
 ```dart
 
@@ -133,11 +133,14 @@ Result<String, Exception> getSomethingPretty() {
 
 in return of the function, you just need to return
 ```dart
-// Normal instance
+// Using Normal instance
 return Success('Something Pretty');
 
-// Result factory
+// Using Result factory
 return Result.success('Something Pretty');
+
+// Using function
+return success('Something Pretty')
 
 // Using extensions
 return 'Something Pretty'.toSuccess();
@@ -146,14 +149,17 @@ return 'Something Pretty'.toSuccess();
 or
 
 ```dart
-// Normal instance
-return Error(Exception('something ugly happened...'));
+// Using Normal instance
+return Failure(Exception('something ugly happened...'));
 
-// Result factory
-return Result.error('something ugly happened...');
+// Using Result factory
+return Result.failure('something ugly happened...');
+
+// Using function
+return failure('something ugly happened...');
 
 // Using extensions
-return 'something ugly happened...'.toError();
+return 'something ugly happened...'.toFailure();
 ```
 
 The function should look something like this:
@@ -164,7 +170,7 @@ Result<String, Exception> getSomethingPretty() {
     if(isOk) {
         return Success('OK!');
     } else {
-        return Error(Exception('Not Ok!'));
+        return Failure(Exception('Not Ok!'));
     }
 }
 
@@ -177,13 +183,13 @@ Result<String, Exception> getSomethingPretty() {
     if(isOk) {
         return 'OK!'.toSuccess();
     } else {
-        return Exception('Not Ok!').toError();
+        return Exception('Not Ok!').toFailure();
     }
 }
 
 ```
 
-> NOTE: The `toSuccess()` and `toError()` methods cannot be used on a `Result` object or a `Future`. If you try, will be throw a Assertion Error.
+> NOTE: The `toSuccess()` and `toFailure()` methods cannot be used on a `Result` object or a `Future`. If you try, will be throw a Assertion exception.
 
 <br>
 
@@ -197,9 +203,9 @@ void main() {
           // handle the success here
           return "success";
         },
-         (error) {
-          // handle the error here
-          return "error";
+         (failure) {
+          // handle the failure here
+          return "failure";
         },
     );
 
@@ -208,28 +214,7 @@ void main() {
 ** OBS: As we are going through a transition process, the `when` and `fold` syntax are identical. 
 Use whichever one you feel most comfortable with and help us figure out which one should remain in the pack.
 
-
-#### Handling the Result with `onSuccess` or `onError`
-
-```dart 
-    final result = getSomethingPretty();
-    // notice the [onSuccess] or [onError] will only be executed if
-    // the result is a Success or an Error respectivaly. 
-    final output = result.onSuccess((name) {
-        // handle here the success
-        return "";
-    });
-    
-    final result = getSomethingPretty();
-    
-    // [result] is NOT an Error, this [output] will be null.
-    final output = result.onError((exception) {
-        // handle here the error
-        return "";
-    });
-```
-
-#### Handling the Result with `tryGetSuccess`
+#### Handling the Result with `getOrNull`
 
 ```dart
 void main() {
@@ -237,22 +222,22 @@ void main() {
 
     String? mySuccessResult;
     if (result.isSuccess()) {
-      mySuccessResult = result.tryGetSuccess();
+      mySuccessResult = result.getOrNull();
     }
 }
 
 ```
 
 
-#### Handling the Result with `tryGetError`
+#### Handling the Result with `exceptionOrNull`
 
 ```dart
 void main() {
     final result = getSomethingPretty();
 
     Exception? myException;
-    if (result.isError()) {
-      myException = result.tryGetError();
+    if (result.isFailure()) {
+      myException = result.exceptionOrNull();
     }
 }
 ```
@@ -266,18 +251,18 @@ void main() {
     final result = getResult()
         .map((e) => MyObject.fromMap(e));
 
-    result.tryGetSuccess(); //Instance of 'MyObject' 
+    result.getOrNull(); //Instance of 'MyObject' 
 }
 ```
 
-#### Mapping error value with `mapError`
+#### Mapping failure value with `mapError`
 
 ```dart
 void main() {
     final result = getResult()
         .mapError((e) => MyException(e));
 
-    result.tryGetError(); //Instance of 'MyException'
+    result.exceptionOrNull(); //Instance of 'MyException'
 
 }
 ```
@@ -290,7 +275,7 @@ Result<String, MyException> checkIsEven(String input){
     if(input % 2 == 0){
         return Success(input);
     } else {
-        return Error(MyException('isn`t even!'));
+        return Failure(MyException('isn`t even!'));
     }
 }
 
@@ -299,7 +284,7 @@ void main() {
         .flatMap((s) => checkIsEven(s));
 }
 ```
-#### Chain others [Result] by `Error` value with `flatMapError`
+#### Chain others [Result] by `Failure` value with `flatMapError`
 
 ```dart
 
@@ -317,18 +302,18 @@ void main() {
 
     String? mySuccessResult;
     if (result.isSuccess()) {
-      mySuccessResult = result.tryGetSuccess(); // 10
+      mySuccessResult = result.getOrNull(); // 10
     }
 }
 ```
 
-#### Add a pure `Error` value with `pureError`
+#### Add a pure `Failure` value with `pureError`
 
 ```dart
 void main() {
     final result = getSomethingPretty().pureError(10);
-    if (result.isError()) {
-       result.tryGetError(); // 10
+    if (result.isFailure()) {
+       result.exceptionOrNull(); // 10
     }
 }
 ```
@@ -372,7 +357,7 @@ print(string) // "0";
 `AsyncResult<S, E>` represents an asynchronous computation.
 Use this component when working with asynchronous **Result**.
 
-**AsyncResult** has some of the operators of the **Result** object to perform data transformations (**Success** or **Error**) before executing the Future.
+**AsyncResult** has some of the operators of the **Result** object to perform data transformations (**Success** or **Failure**) before executing the Future.
 
 All **Result** operators is available in **AsyncResult**
 
@@ -386,7 +371,7 @@ AsyncResult<String, Exception> fetchProducts() async {
       final products = ProductModel.fromList(response.data);
       return Success(products);
     } on DioError catch (e) {
-      return Error(ProductException(e.message));
+      return Failure(ProductException(e.message));
     }
 }
 
@@ -394,7 +379,7 @@ AsyncResult<String, Exception> fetchProducts() async {
 
 final state = await fetch()
     .map((products) => LoadedState(products))
-    .mapLeft((error) => ErrorState(error))
+    .mapLeft((failure) => ErrorState(failure))
 
 ```
 <br>
