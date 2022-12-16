@@ -77,7 +77,7 @@
 
 Overruns are common in design, and modern architectures always designate a place to handle failures.
 This means dramatically decreasing try/catch usage and keeping treatments in one place.
-But the other layers of code need to know about the two main values `[Success, Failure]`. The solution is in
+But the other layers of code need to know about the two main values `[Success, Failure]`. The solution lies in the
 `Result` class pattern implemented in `Kotlin` and `Swift` and now also in `Dart` via this package(`result_dart`).
 
 <i>This project is distributed under the MIT License. See `LICENSE` for more information.
@@ -101,9 +101,9 @@ But the other layers of code need to know about the two main values `[Success, F
 ## Getting Started
 
 <!---- The description provided below was aimed to show how to install a pub.dev package, change it as you see fit for your project ---->
-To get your_package in your project follow either of the instructions below:
+To get result_dart working in your project follow either of the instructions below:
 
-a) Add your_package as a dependency in your Pubspec.yaml:
+a) Add result_dart as a dependency in your Pubspec.yaml:
  ```yaml
    dependencies:
      result_dart: x.x.x
@@ -120,21 +120,22 @@ b) Use Dart Pub:
 ## How to Use
 
 
-In the return of a function, set it to return a Result type;
+In the return of a function that you want to receive an answer as Sucess or Failure, set it to return a Result type;
+
 ```dart
 Result getSomethingPretty();
 ```
+
 then add the Success and the Failure types.
 
 ```dart
-
 Result<String, Exception> getSomethingPretty() {
 
 }
 
 ```
 
-in return of the function, you just need to return
+In the return of the above function, you just need to use:
 ```dart
 // Using Normal instance
 return Success('Something Pretty');
@@ -172,7 +173,7 @@ Result<String, Exception> getSomethingPretty() {
 }
 
 ```
-or this (using extensions):
+or when using extensions, like this:
 
 ```dart
 
@@ -186,7 +187,7 @@ Result<String, Exception> getSomethingPretty() {
 
 ```
 
-> NOTE: The `toSuccess()` and `toFailure()` methods cannot be used on a `Result` object or a `Future`. If you try, will be throw a Assertion exception.
+> IMPORTANT NOTE: The `toSuccess()` and `toFailure()` methods cannot be used on a `Result` object or a `Future`. If you try, will be throw a Assertion exception.
 
 <br>
 
@@ -340,7 +341,7 @@ void main() {
 
 ### Unit Type
 
-Some results do not need a specific return. Use the Unit type to signal an empty return.
+Some results do not need a specific return. Use the Unit type to signal an **empty** return.
 
 ```dart
     Result<Unit, Exception>
@@ -349,13 +350,16 @@ Some results do not need a specific return. Use the Unit type to signal an empty
 ### Help with functions that return their parameter:
 
 Sometimes it is necessary to return the parameter of the function as in this example:
+
 ```dart
 final result = Success<int, String>(0);
 
 String value = result.when((s) => '$s', (e) => e);
 print(string) // "0";
 ```
-Now we can use the `identity` function or its acronym `id` to facilitate the declaration of this type of function that returns its own parameter and does nothing else:
+
+We can use the `identity` function or its acronym `id` to facilitate the declaration of this type of function that returns its own parameter and does nothing else:
+
 ```dart
 final result = Success<int, String>(0);
 
