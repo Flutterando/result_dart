@@ -6,10 +6,12 @@ import '../result_dart.dart';
 typedef AsyncResult<S extends Object, F extends Object> = Future<Result<S, F>>;
 
 /// `AsyncResult<S, E>` represents an asynchronous computation.
-extension AsyncResultExtension<S extends Object, F extends Object> on AsyncResult<S, F> {
+extension AsyncResultExtension<S extends Object, F extends Object>
+    on AsyncResult<S, F> {
   /// Returns a new `Result`, mapping any `Success` value
   /// using the given transformation and unwrapping the produced `Result`.
-  AsyncResult<W, F> flatMap<W extends Object>(FutureOr<Result<W, F>> Function(S success) fn) {
+  AsyncResult<W, F> flatMap<W extends Object>(
+      FutureOr<Result<W, F>> Function(S success) fn) {
     return then((result) => result.when(fn, Failure.new));
   }
 
