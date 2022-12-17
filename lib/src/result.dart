@@ -81,7 +81,7 @@ abstract class Result<S extends Object, F extends Object> {
   /// Returns the encapsulated `Result` of the given transform function
   /// applied to the encapsulated a `Failure` or the original
   /// encapsulated value if it is success.
-  Result<S, F> recover(Success<S, F> Function(F failure) onFailure);
+  Result<S, F> recover(Result<S, F> Function(F failure) onFailure);
 }
 
 /// Success Result.
@@ -186,7 +186,7 @@ class Success<S extends Object, F extends Object> implements Result<S, F> {
   }
 
   @override
-  Result<S, F> recover(Success<S, F> Function(F failure) onFailure) {
+  Result<S, F> recover(Result<S, F> Function(F failure) onFailure) {
     return Success<S, F>(_success);
   }
 
@@ -293,7 +293,7 @@ class Failure<S extends Object, F extends Object> implements Result<S, F> {
   }
 
   @override
-  Result<S, F> recover(Success<S, F> Function(F failure) onFailure) {
+  Result<S, F> recover(Result<S, F> Function(F failure) onFailure) {
     return onFailure(_failure);
   }
 

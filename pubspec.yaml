@@ -1,6 +1,6 @@
 name: result_dart
 description: Result for dart. It is an implementation based on Kotlin Result and Swift Result.
-version: 1.0.0+2
+version: 1.0.1
 repository: https://github.com/Flutterando/result_dart
 
 environment:
