@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:result_dart/functions.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:test/test.dart';
 
@@ -104,14 +105,14 @@ Given a success result,
 
   group('Map', () {
     test('Success', () {
-      const result = Success(4);
+      final result = successOf(4);
       final result2 = result.map((success) => '=' * success);
 
       expect(result2.getOrNull(), '====');
     });
 
     test('Error', () {
-      const result = Failure<String, int>(4);
+      final result = failureOf<String, int>(4);
       final result2 = result.map((success) => 'change');
 
       expect(result2.getOrNull(), isNull);

@@ -1,3 +1,7 @@
+library result_dart;
+
+import 'package:result_dart/result_dart.dart';
+
 /// Returns the given `a`.
 ///
 /// Same as `id`.
@@ -33,3 +37,13 @@ T identity<T>(T a) => a;
 /// final withId = result.when((success) => '$success', id);
 /// ```
 T id<T>(T a) => a;
+
+/// Build a [Result] that returns a [Failure].
+Result<S, F> successOf<S extends Object, F extends Object>(S success) {
+  return Result<S, F>.success(success);
+}
+
+/// Build a [Result] that returns a [Failure].
+Result<S, F> failureOf<S extends Object, F extends Object>(F failure) {
+  return Result<S, F>.failure(failure);
+}

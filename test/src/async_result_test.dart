@@ -1,3 +1,4 @@
+import 'package:result_dart/functions.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:test/test.dart';
 

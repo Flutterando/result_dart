@@ -143,6 +143,9 @@ return Success('Something Pretty');
 // Using Result factory
 return Result.success('Something Pretty');
 
+// import 'package:result_dart/functions.dart'
+return successOf('Something Pretty');
+
 // Using extensions
 return 'Something Pretty'.toSuccess();
 ```
@@ -155,6 +158,9 @@ return Failure(Exception('something ugly happened...'));
 
 // Using Result factory
 return Result.failure('something ugly happened...');
+
+// import 'package:result_dart/functions.dart'
+return failureOf('Something Pretty');
 
 // Using extensions
 return 'something ugly happened...'.toFailure();
@@ -410,6 +416,9 @@ Some results do not need a specific return. Use the Unit type to signal an **emp
 ```
 
 ### Help with functions that return their parameter:
+
+NOTE: use import 'package:result_dart/functions.dart'
+
 
 Sometimes it is necessary to return the parameter of the function as in this example:
 
