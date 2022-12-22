@@ -1,3 +1,7 @@
+## [1.0.3] - 2021-12-22
+
+* fix: AsyncResult recover
+
 ## [1.0.2] - 2021-12-18
 
 * fix: separed functions.dart import

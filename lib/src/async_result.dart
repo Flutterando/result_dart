@@ -103,7 +103,9 @@ extension AsyncResultExtension<S extends Object, F extends Object> //
   /// Returns the encapsulated `Result` of the given transform function
   /// applied to the encapsulated a `Failure` or the original
   /// encapsulated value if it is success.
-  AsyncResult<S, F> recover(Result<S, F> Function(F failure) onFailure) {
-    return then((result) => result.recover(onFailure));
+  AsyncResult<S, F> recover(
+    FutureOr<Result<S, F>> Function(F failure) onFailure,
+  ) {
+    return then((result) => result.fold(Success.new, onFailure));
   }
 }
