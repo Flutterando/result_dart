@@ -1,3 +1,6 @@
+## [1.0.5] - 2023-01-26
+
+* feat: Added FutureOr in AsyncResult.MapError
 ## [1.0.4] - 2023-01-26
 
 * feat: Added FutureOr in AsyncResult.Map
