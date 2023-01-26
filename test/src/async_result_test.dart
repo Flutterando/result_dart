@@ -41,6 +41,7 @@ void main() {
         .map((success) => success * 2);
 
     expect(result.getOrNull(), 2);
+    expect(const Failure(2).toAsyncResult().map(identity), completes);
   });
 
   test('mapError', () async {

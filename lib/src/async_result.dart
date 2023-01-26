@@ -26,8 +26,17 @@ extension AsyncResultExtension<S extends Object, F extends Object> //
 
   /// Returns a new `AsyncResult`, mapping any `Success` value
   /// using the given transformation.
-  AsyncResult<W, F> map<W extends Object>(W Function(S success) fn) {
-    return then((result) => result.map(fn));
+  AsyncResult<W, F> map<W extends Object>(FutureOr<W> Function(S success) fn) {
+    return then(
+      (result) => result.map(fn).fold(
+        (success) async {
+          return Success(await success);
+        },
+        (failure) {
+          return Failure(failure);
+        },
+      ),
+    );
   }
 
   /// Returns a new `Result`, mapping any `Error` value
