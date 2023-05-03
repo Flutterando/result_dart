@@ -10,10 +10,10 @@ import 'unit.dart' as type_unit;
 @sealed
 abstract class Result<S extends Object, F extends Object> {
   /// Build a [Result] that returns a [Failure].
-  factory Result.success(S s) => Success(s);
+  const factory Result.success(S s) = Success;
 
   /// Build a [Result] that returns a [Failure].
-  factory Result.failure(F e) => Failure(e);
+  const factory Result.failure(F e) = Failure;
 
   /// Returns the success value as a throwing expression.
   S getOrThrow();
