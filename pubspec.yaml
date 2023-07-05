@@ -4,7 +4,7 @@ version: 1.1.0
 repository: https://github.com/Flutterando/result_dart
 
 environment:
-  sdk: ">=2.15.1 <3.0.0"
+  sdk: ">=2.15.1 <4.0.0"
 
 dependencies:
   meta: ^1.3.0
