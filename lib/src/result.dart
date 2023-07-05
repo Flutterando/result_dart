@@ -47,6 +47,19 @@ abstract class Result<S extends Object, F extends Object> {
     W Function(F failure) onFailure,
   );
 
+  /// Performs the given action on the encapsulated value if this
+  /// instance represents success. Returns the original Result unchanged.
+  Result<S, F> onSuccess<W>(
+    void Function(S success) onSuccess,
+  );
+
+  /// Performs the given action on the encapsulated Throwable
+  /// exception if this instance represents failure.
+  /// Returns the original Result unchanged.
+  Result<S, F> onFailure<W>(
+    void Function(F failure) onFailure,
+  );
+
   /// Returns a new `Result`, mapping any `Success` value
   /// using the given transformation.
   Result<W, F> map<W extends Object>(W Function(S success) fn);
@@ -81,7 +94,9 @@ abstract class Result<S extends Object, F extends Object> {
   /// Returns the encapsulated `Result` of the given transform function
   /// applied to the encapsulated a `Failure` or the original
   /// encapsulated value if it is success.
-  Result<S, F> recover(Result<S, F> Function(F failure) onFailure);
+  Result<S, R> recover<R extends Object>(
+    Result<S, R> Function(F failure) onFailure,
+  );
 }
 
 /// Success Result.
@@ -186,12 +201,25 @@ class Success<S extends Object, F extends Object> implements Result<S, F> {
   }
 
   @override
-  Result<S, F> recover(Result<S, F> Function(F failure) onFailure) {
-    return Success<S, F>(_success);
+  Result<S, R> recover<R extends Object>(
+    Result<S, R> Function(F failure) onFailure,
+  ) {
+    return Success(_success);
   }
 
   @override
   AsyncResult<S, F> toAsyncResult() async => this;
+
+  @override
+  Result<S, F> onFailure<W>(void Function(F failure) onFailure) {
+    return this;
+  }
+
+  @override
+  Result<S, F> onSuccess<W>(void Function(S success) onSuccess) {
+    onSuccess(_success);
+    return this;
+  }
 }
 
 /// Error Result.
@@ -293,10 +321,23 @@ class Failure<S extends Object, F extends Object> implements Result<S, F> {
   }
 
   @override
-  Result<S, F> recover(Result<S, F> Function(F failure) onFailure) {
+  Result<S, R> recover<R extends Object>(
+    Result<S, R> Function(F failure) onFailure,
+  ) {
     return onFailure(_failure);
   }
 
   @override
   AsyncResult<S, F> toAsyncResult() async => this;
+
+  @override
+  Result<S, F> onFailure<W>(void Function(F failure) onFailure) {
+    onFailure(_failure);
+    return this;
+  }
+
+  @override
+  Result<S, F> onSuccess<W>(void Function(S success) onSuccess) {
+    return this;
+  }
 }

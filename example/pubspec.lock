@@ -5,16 +5,16 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: "6c268b42ed578a53088d834796959e4a1814b5e9e164f147f580a386e5decf42"
+      sha256: "3c74dbf8763d36539f114c799d8a2d87343b5067e9d796ca22b5eb8437090ee3"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.0"
+    version: "1.9.1"
   result_dart:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "1.0.5"
+    version: "1.1.0"
 sdks:
   dart: ">=2.15.1 <4.0.0"

@@ -164,4 +164,32 @@ void main() {
       expect(result.getOrThrow(), completion(1));
     });
   });
+
+  group('onSuccess', () {
+    test('Success', () {
+      const Success<int, String>(0) //
+          .toAsyncResult()
+          .onFailure((failure) {})
+          .onSuccess(
+        expectAsync1(
+          (value) {
+            expect(value, 0);
+          },
+        ),
+      );
+    });
+
+    test('Error', () {
+      const Failure<int, String>('failure') //
+          .toAsyncResult()
+          .onSuccess((success) {})
+          .onFailure(
+        expectAsync1(
+          (value) {
+            expect(value, 'failure');
+          },
+        ),
+      );
+    });
+  });
 }
