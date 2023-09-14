@@ -8,7 +8,7 @@ import 'unit.dart' as type_unit;
 /// Receives two values [F] and [S]
 /// as [F] is an error and [S] is a success.
 @sealed
-abstract class Result<S extends Object, F extends Object> {
+abstract class Result<S, F> {
   /// Build a [Result] that returns a [Failure].
   factory Result.success(S s) => Success(s);
 
@@ -104,7 +104,7 @@ abstract class Result<S extends Object, F extends Object> {
 /// return it when the result of a [Result] is
 /// the expected value.
 @immutable
-class Success<S extends Object, F extends Object> implements Result<S, F> {
+class Success<S, F> implements Result<S, F> {
   /// Receives the [S] param as
   /// the successful result.
   const Success(
@@ -227,7 +227,7 @@ class Success<S extends Object, F extends Object> implements Result<S, F> {
 /// return it when the result of a [Result] is
 /// not the expected value.
 @immutable
-class Failure<S extends Object, F extends Object> implements Result<S, F> {
+class Failure<S, F> implements Result<S, F> {
   /// Receives the [F] param as
   /// the error result.
   const Failure(this._failure);
@@ -288,7 +288,7 @@ class Failure<S extends Object, F extends Object> implements Result<S, F> {
 
   @override
   S getOrThrow() {
-    throw _failure;
+    throw _failure as Object;
   }
 
   @override
