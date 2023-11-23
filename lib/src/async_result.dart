@@ -134,13 +134,13 @@ extension AsyncResultExtension<S extends Object, F extends Object> //
   /// Performs the given action on the encapsulated Throwable
   /// exception if this instance represents failure.
   /// Returns the original Result unchanged.
-  AsyncResult<S, F> onFailure<W>(void Function(F failure) onFailure) {
+  AsyncResult<S, F> onFailure(void Function(F failure) onFailure) {
     return then((result) => result.onFailure(onFailure));
   }
 
   /// Performs the given action on the encapsulated value if this
   /// instance represents success. Returns the original Result unchanged.
-  AsyncResult<S, F> onSuccess<W>(void Function(S success) onSuccess) {
+  AsyncResult<S, F> onSuccess(void Function(S success) onSuccess) {
     return then((result) => result.onSuccess(onSuccess));
   }
 }
