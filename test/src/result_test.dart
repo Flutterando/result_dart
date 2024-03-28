@@ -41,12 +41,12 @@ void main() {
   });
 
   test('Result.success', () {
-    final result = Result.success(0);
+    const result = Result.success(0);
     expect(result.getOrNull(), 0);
   });
 
   test('Result.error', () {
-    final result = Result.failure(0);
+    const result = Result.failure(0);
     expect(result.exceptionOrNull(), 0);
   });
 
