@@ -49,14 +49,14 @@ abstract class Result<S extends Object, F extends Object> {
 
   /// Performs the given action on the encapsulated value if this
   /// instance represents success. Returns the original Result unchanged.
-  Result<S, F> onSuccess<W>(
+  Result<S, F> onSuccess(
     void Function(S success) onSuccess,
   );
 
   /// Performs the given action on the encapsulated Throwable
   /// exception if this instance represents failure.
   /// Returns the original Result unchanged.
-  Result<S, F> onFailure<W>(
+  Result<S, F> onFailure(
     void Function(F failure) onFailure,
   );
 
@@ -211,12 +211,12 @@ class Success<S extends Object, F extends Object> implements Result<S, F> {
   AsyncResult<S, F> toAsyncResult() async => this;
 
   @override
-  Result<S, F> onFailure<W>(void Function(F failure) onFailure) {
+  Result<S, F> onFailure(void Function(F failure) onFailure) {
     return this;
   }
 
   @override
-  Result<S, F> onSuccess<W>(void Function(S success) onSuccess) {
+  Result<S, F> onSuccess(void Function(S success) onSuccess) {
     onSuccess(_success);
     return this;
   }
@@ -331,13 +331,13 @@ class Failure<S extends Object, F extends Object> implements Result<S, F> {
   AsyncResult<S, F> toAsyncResult() async => this;
 
   @override
-  Result<S, F> onFailure<W>(void Function(F failure) onFailure) {
+  Result<S, F> onFailure(void Function(F failure) onFailure) {
     onFailure(_failure);
     return this;
   }
 
   @override
-  Result<S, F> onSuccess<W>(void Function(S success) onSuccess) {
+  Result<S, F> onSuccess(void Function(S success) onSuccess) {
     return this;
   }
 }
