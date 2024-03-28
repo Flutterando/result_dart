@@ -1,6 +1,12 @@
+## [1.1.1] - 2023-07-05
+
+* pump Dart version to 3.0.0
+* fix: factory const
+
 ## [1.1.0] - 2023-07-05
 
 * feat: Added onSuccess and onFailure callbacks
+
 ## [1.0.6] - 2023-05-11
 
 * feat: Dart 3.0.0 support
