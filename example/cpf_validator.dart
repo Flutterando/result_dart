@@ -14,7 +14,7 @@ void main(List<String> args) {
 Result<String, ValidatorException> getTerminalInput() {
   final text = stdin.readLineSync();
   if (text == null || text.isEmpty) {
-    return Result.failure(ValidatorException('Incorrect input'));
+    return const Result.failure(ValidatorException('Incorrect input'));
   }
 
   return Result.success(text);
@@ -27,14 +27,14 @@ String removeSpecialCharacteres(String input) {
 
 Result<List<int>, ValidatorException> parseNumbers(String input) {
   if (input.isEmpty) {
-    return Result.failure(ValidatorException('Input is Empty'));
+    return const Result.failure(ValidatorException('Input is Empty'));
   }
 
   try {
     final list = input.split('').map((e) => int.parse(e)).toList();
     return Result.success(list);
   } catch (e) {
-    return Result.failure(ValidatorException('Parse error'));
+    return const Result.failure(ValidatorException('Parse error'));
   }
 }
 
