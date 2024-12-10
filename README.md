@@ -518,7 +518,7 @@ Remember to include a tag, and to follow [Conventional Commits](https://www.conv
 ## Contact
 
 Flutterando Community
-- [Discord](https://discord.gg/qNBDHNARja)
+- [Discord](https://discord.flutterando.com.br/)
 - [Telegram](https://t.me/flutterando)
 - [Website](https://www.flutterando.com.br)
 - [Youtube Channel](https://www.youtube.com.br/flutterando)
