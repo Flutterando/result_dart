@@ -23,14 +23,14 @@ void main() {
     test('async ', () async {
       final result = await const Failure(1) //
           .toAsyncResult()
-          .flatMapError((error) async => Failure(error * 2));
+          .flatMapError((error) async => Failure((error as int) * 2));
       expect(result.exceptionOrNull(), 2);
     });
 
     test('sink', () async {
       final result = await const Failure(1) //
           .toAsyncResult()
-          .flatMapError((error) => Failure(error * 2));
+          .flatMapError((error) => Failure((error as int) * 2));
       expect(result.exceptionOrNull(), 2);
     });
   });
@@ -47,7 +47,7 @@ void main() {
   test('mapError', () async {
     final result = await const Failure(1) //
         .toAsyncResult()
-        .mapError((error) => error * 2);
+        .mapError((error) => (error as int) * 2);
     expect(result.exceptionOrNull(), 2);
     expect(const Success(2).toAsyncResult().mapError(identity), completes);
   });
@@ -63,31 +63,15 @@ void main() {
     expect(result.exceptionOrNull(), 10);
   });
 
-  group('swap', () {
-    test('Success to Error', () async {
-      final result = const Success<int, String>(0).toAsyncResult();
-      final swap = await result.swap();
-
-      expect(swap.exceptionOrNull(), 0);
-    });
-
-    test('Error to Success', () async {
-      final result = const Failure<String, int>(0).toAsyncResult();
-      final swap = await result.swap();
-
-      expect(swap.getOrNull(), 0);
-    });
-  });
-
   group('fold', () {
     test('Success', () async {
-      final result = const Success<int, String>(0).toAsyncResult();
+      final result = const Success<int>(0).toAsyncResult();
       final futureValue = result.fold(id, (e) => -1);
       expect(futureValue, completion(0));
     });
 
     test('Error', () async {
-      final result = const Failure<String, int>(0).toAsyncResult();
+      final result = const Failure<String>(0).toAsyncResult();
       final futureValue = result.fold(identity, (e) => e);
       expect(futureValue, completion(0));
     });
@@ -95,14 +79,14 @@ void main() {
 
   group('tryGetSuccess and tryGetError', () {
     test('Success', () async {
-      final result = const Success<int, String>(0).toAsyncResult();
+      final result = const Success<int>(0).toAsyncResult();
 
       expect(result.isSuccess(), completion(true));
       expect(result.getOrNull(), completion(0));
     });
 
     test('Error', () async {
-      final result = const Failure<String, int>(0).toAsyncResult();
+      final result = const Failure<String>(0).toAsyncResult();
 
       expect(result.isError(), completion(true));
       expect(result.exceptionOrNull(), completion(0));
@@ -111,25 +95,25 @@ void main() {
 
   group('getOrThrow', () {
     test('Success', () {
-      final result = const Success<int, String>(0).toAsyncResult();
+      final result = const Success<int>(0).toAsyncResult();
       expect(result.getOrThrow(), completion(0));
     });
 
     test('Error', () {
-      final result = const Failure<String, int>(0).toAsyncResult();
+      final result = const Failure<String>(0).toAsyncResult();
       expect(result.getOrThrow(), throwsA(0));
     });
   });
 
   group('getOrElse', () {
     test('Success', () {
-      final result = const Success<int, String>(0).toAsyncResult();
+      final result = const Success<int>(0).toAsyncResult();
       final value = result.getOrElse((f) => -1);
       expect(value, completion(0));
     });
 
     test('Error', () {
-      final result = const Failure<int, int>(0).toAsyncResult();
+      final result = const Failure<int>(0).toAsyncResult();
       final value = result.getOrElse((f) => 2);
       expect(value, completion(2));
     });
@@ -137,13 +121,13 @@ void main() {
 
   group('getOrDefault', () {
     test('Success', () {
-      final result = const Success<int, String>(0).toAsyncResult();
+      final result = const Success<int>(0).toAsyncResult();
       final value = result.getOrDefault(-1);
       expect(value, completion(0));
     });
 
     test('Error', () {
-      final result = const Failure<int, int>(0).toAsyncResult();
+      final result = const Failure<int>(0).toAsyncResult();
       final value = result.getOrDefault(2);
       expect(value, completion(2));
     });
@@ -151,14 +135,14 @@ void main() {
 
   group('recover', () {
     test('Success', () {
-      final result = const Success<int, String>(0) //
+      final result = const Success<int>(0) //
           .toAsyncResult()
           .recover((f) => const Success(1));
       expect(result.getOrThrow(), completion(0));
     });
 
     test('Error', () {
-      final result = const Failure<int, String>('failure') //
+      final result = const Failure<int>('failure') //
           .toAsyncResult()
           .recover((f) => const Success(1));
       expect(result.getOrThrow(), completion(1));
@@ -167,7 +151,7 @@ void main() {
 
   group('onSuccess', () {
     test('Success', () {
-      const Success<int, String>(0) //
+      const Success<int>(0) //
           .toAsyncResult()
           .onFailure((failure) {})
           .onSuccess(
@@ -180,7 +164,7 @@ void main() {
     });
 
     test('Error', () {
-      const Failure<int, String>('failure') //
+      const Failure<int>('failure') //
           .toAsyncResult()
           .onSuccess((success) {})
           .onFailure(

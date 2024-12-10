@@ -7,21 +7,21 @@ void main() {
     test('without result type', () {
       final result = 'error'.toFailure();
 
-      expect(result, isA<Result<dynamic, String>>());
+      expect(result, isA<Result<dynamic>>());
       expect(result.exceptionOrNull(), isA<String>());
       expect(result.exceptionOrNull(), 'error');
     });
 
     test('with result type', () {
-      final Result<int, String> result = 'error'.toFailure();
+      final Result<int> result = 'error'.toFailure();
 
-      expect(result, isA<Result<int, String>>());
+      expect(result, isA<Result<int>>());
       expect(result.exceptionOrNull(), isA<String>());
       expect(result.exceptionOrNull(), 'error');
     });
 
     test('throw AssertException if is a Result object', () {
-      final Result<int, String> result = 'error'.toFailure();
+      final Result<int> result = 'error'.toFailure();
       expect(result.toFailure, throwsA(isA<AssertionError>()));
     });
 
@@ -34,14 +34,14 @@ void main() {
     test('without result type', () {
       final result = 'success'.toSuccess();
 
-      expect(result, isA<Result<String, dynamic>>());
+      expect(result, isA<Result<String>>());
       expect(result.getOrNull(), 'success');
     });
 
     test('with result type', () {
-      final Result<String, int> result = 'success'.toSuccess();
+      final Result<String> result = 'success'.toSuccess();
 
-      expect(result, isA<Result<String, int>>());
+      expect(result, isA<Result<String>>());
       expect(result.getOrNull(), 'success');
     });
 
