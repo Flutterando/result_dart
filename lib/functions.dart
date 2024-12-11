@@ -39,11 +39,11 @@ T identity<T>(T a) => a;
 T id<T>(T a) => a;
 
 /// Build a [Result] that returns a [Failure].
-Result<S, F> successOf<S extends Object, F extends Object>(S success) {
-  return Result<S, F>.success(success);
+ResultDart<S, F> successOf<S extends Object, F extends Object>(S success) {
+  return Success<S, F>(success);
 }
 
 /// Build a [Result] that returns a [Failure].
-Result<S, F> failureOf<S extends Object, F extends Object>(F failure) {
-  return Result<S, F>.failure(failure);
+ResultDart<S, F> failureOf<S extends Object, F extends Object>(F failure) {
+  return Failure<S, F>(failure);
 }

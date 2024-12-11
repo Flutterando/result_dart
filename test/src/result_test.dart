@@ -17,7 +17,7 @@ void main() {
     });
 
     test('Success.unit type infer', () {
-      Result<Unit, Exception> fn() {
+      ResultDart<Unit, Exception> fn() {
         return Success.unit();
       }
 
@@ -31,23 +31,13 @@ void main() {
     });
 
     test('Error.unit type infer', () {
-      Result<String, Unit> fn() {
+      ResultDart<String, Unit> fn() {
         return Failure.unit();
       }
 
       final result = fn();
       expect(result.exceptionOrNull(), unit);
     });
-  });
-
-  test('Result.success', () {
-    const result = Result.success(0);
-    expect(result.getOrNull(), 0);
-  });
-
-  test('Result.error', () {
-    const result = Result.failure(0);
-    expect(result.exceptionOrNull(), 0);
   });
 
   test('''
@@ -297,12 +287,12 @@ Given a success result,
   });
 }
 
-Result<Unit, MyException> getMockedSuccessResult() {
+ResultDart<Unit, MyException> getMockedSuccessResult() {
   return Success.unit();
 }
 
 class MyUseCase {
-  Result<MyResult, MyException> call({bool returnError = false}) {
+  ResultDart<MyResult, MyException> call({bool returnError = false}) {
     if (returnError) {
       return const Failure(MyException('something went wrong'));
     } else {
