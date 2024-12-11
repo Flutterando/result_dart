@@ -12,7 +12,7 @@
 
   <p align="center">
     This package aims to create an implemetation of <b>Kotlin's and Swift's Result class and own operators</b>.
-    Inspired by Higor Lapa's <a href='https://pub.dev/packages/multiple_result'>multiple_result</a> package, the `dartz` package and the `fpdart` package.  
+    Inspired by `multiple_result` package, the `dartz` package and the `fpdart` package.  
     <br />
     <!-- Put the link for the documentation here -->
     <a href="https://pub.dev/documentation/result_dart/latest/"><strong>Explore the docs »</strong></a>
@@ -46,8 +46,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#about-the-project">About The Project</a></li>
-    <li><a href="#sponsors">Sponsors</a></li>
-    <li><a href="#getting-started">Getting Started</a></li>
+ m    <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#how-to-use">How to Use</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -85,25 +84,39 @@ But the other layers of code need to know about the two main values `[Success, F
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- SPONSORS -->
-<!-- For now FTeam is the only sponsor for Flutterando packages. The community is open to more support for it's open source endeavors, so check it out and make contact with us through the links provided at the end -->
-## Sponsors
 
-<a href="https://fteam.dev">
-    <img src="https://raw.githubusercontent.com/Flutterando/README-Template/master/readme_assets/sponsor-logo.png" alt="Logo" width="120">
-  </a>
+## Migrate 1.1.1 to 2.0.0
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-<br>
+This version aims to reduce the `Result` boilerplate by making the `Failure` type Exception by default. This will free the Result from having to type `Failure`, making the declaration smaller.
+
+```dart
+// Old
+Result<int, Exception> myResult = Success(42);
+
+// NEW
+Result<int> myResult = Success(42);
+
+```
+
+if there is a need to type it, use `ResultDart<Success, Failure>`:
+
+```dart
+// Old
+Result<int, String> myResult = Success(42);
+
+// NEW
+ResultDart<int, String> myResult = Success(42);
+
+```
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
 <!---- The description provided below was aimed to show how to install a pub.dev package, change it as you see fit for your project ---->
-To get result_dart working in your project follow either of the instructions below:
+To get `result_dart` working in your project follow either of the instructions below:
 
-a) Add result_dart as a dependency in your Pubspec.yaml:
+a) Add `result_dart` as a dependency in your Pubspec.yaml:
  ```yaml
    dependencies:
      result_dart: x.x.x
@@ -129,7 +142,7 @@ Result getSomethingPretty();
 then add the Success and the Failure types.
 
 ```dart
-Result<String, Exception> getSomethingPretty() {
+Result<String> getSomethingPretty() {
 
 }
 
@@ -139,9 +152,6 @@ In the return of the above function, you just need to use:
 ```dart
 // Using Normal instance
 return Success('Something Pretty');
-
-// Using Result factory
-return Result.success('Something Pretty');
 
 // import 'package:result_dart/functions.dart'
 return successOf('Something Pretty');
@@ -156,9 +166,6 @@ or
 // Using Normal instance
 return Failure(Exception('something ugly happened...'));
 
-// Using Result factory
-return Result.failure('something ugly happened...');
-
 // import 'package:result_dart/functions.dart'
 return failureOf('Something Pretty');
 
@@ -170,7 +177,7 @@ The function should look something like this:
 
 ```dart
 
-Result<String, Exception> getSomethingPretty() {
+Result<String> getSomethingPretty() {
     if(isOk) {
         return Success('OK!');
     } else {
@@ -183,7 +190,7 @@ or when using extensions, like this:
 
 ```dart
 
-Result<String, Exception> getSomethingPretty() {
+Result<String> getSomethingPretty() {
     if(isOk) {
         return 'OK!'.toSuccess();
     } else {
@@ -412,7 +419,7 @@ void main() {
 Some results do not need a specific return. Use the Unit type to signal an **empty** return.
 
 ```dart
-    Result<Unit, Exception>
+    Result<Unit>
 ```
 
 ### Help with functions that return their parameter:
@@ -423,7 +430,7 @@ NOTE: use import 'package:result_dart/functions.dart'
 Sometimes it is necessary to return the parameter of the function as in this example:
 
 ```dart
-final result = Success<int, String>(0);
+final result = Success(0);
 
 String value = result.when((s) => '$s', (e) => e);
 print(string) // "0";
@@ -432,7 +439,7 @@ print(string) // "0";
 We can use the `identity` function or its acronym `id` to facilitate the declaration of this type of function that returns its own parameter and does nothing else:
 
 ```dart
-final result = Success<int, String>(0);
+final result = Success(0);
 
 // changed `(e) => e` by `id`
 String value = result.when((s) => '$s', id);
@@ -452,7 +459,7 @@ All **Result** operators is available in **AsyncResult**
 
 ```dart
 
-AsyncResult<String, Exception> fetchProducts() async {
+AsyncResult<String> fetchProducts() async {
     try {
       final response = await dio.get('/products');
       final products = ProductModel.fromList(response.data);
