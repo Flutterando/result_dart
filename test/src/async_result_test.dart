@@ -49,7 +49,7 @@ void main() {
         .toAsyncResult()
         .mapError((error) => (error as int) * 2);
     expect(result.exceptionOrNull(), 2);
-    expect(const Success(2).toAsyncResult().mapError(identity), completes);
+    expect(const Success(2).toAsyncResult().mapError<Object>((e) => identity<Object>(e)), completes);
   });
 
   test('pure', () async {

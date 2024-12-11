@@ -13,7 +13,7 @@ abstract class Result<S extends Object> {
   const factory Result.success(S s) = Success;
 
   /// Build a [Result] that returns a [Failure].
-  const factory Result.failure(Object e) = Failure;
+  const factory Result.failure(dynamic e) = Failure;
 
   /// Returns the success value as a throwing expression.
   S getOrThrow();
@@ -21,7 +21,7 @@ abstract class Result<S extends Object> {
   /// Returns the encapsulated value if this instance represents `Success`
   /// or the result of `onFailure` function for
   /// the encapsulated a `Failure` value.
-  S getOrElse(S Function(Object failure) onFailure);
+  S getOrElse(S Function(dynamic failure) onFailure);
 
   /// Returns the encapsulated value if this instance represents
   /// `Success` or the `defaultValue` if it is `Failure`.
@@ -31,7 +31,7 @@ abstract class Result<S extends Object> {
   S? getOrNull();
 
   /// Returns the value of [Failure] or null.
-  Object? exceptionOrNull();
+  dynamic exceptionOrNull();
 
   /// Returns true if the current result is an [Failure].
   bool isError();
@@ -44,7 +44,7 @@ abstract class Result<S extends Object> {
   /// for the encapsulated value if it is `Failure`.
   W fold<W>(
     W Function(S success) onSuccess,
-    W Function(Object failure) onFailure,
+    W Function(dynamic failure) onFailure,
   );
 
   /// Performs the given action on the encapsulated value if this
@@ -57,7 +57,7 @@ abstract class Result<S extends Object> {
   /// exception if this instance represents failure.
   /// Returns the original Result unchanged.
   Result<S> onFailure(
-    void Function(Object failure) onFailure,
+    void Function(dynamic failure) onFailure,
   );
 
   /// Returns a new `Result`, mapping any `Success` value
@@ -66,7 +66,7 @@ abstract class Result<S extends Object> {
 
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation.
-  Result<S> mapError<W extends Object>(W Function(Object error) fn);
+  Result<S> mapError<W extends Object>(W Function(dynamic error) fn);
 
   /// Returns a new `Result`, mapping any `Success` value
   /// using the given transformation and unwrapping the produced `Result`.
@@ -75,7 +75,7 @@ abstract class Result<S extends Object> {
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation and unwrapping the produced `Result`.
   Result<S> flatMapError<W extends Object>(
-    Result<S> Function(Object error) fn,
+    Result<S> Function(dynamic error) fn,
   );
 
   /// Change the [Success] value.
@@ -90,8 +90,8 @@ abstract class Result<S extends Object> {
   /// Returns the encapsulated `Result` of the given transform function
   /// applied to the encapsulated a `Failure` or the original
   /// encapsulated value if it is success.
-  Result<S> recover<R extends Object>(
-    Result<S> Function(Object failure) onFailure,
+  Result<S> recover<R extends dynamic>(
+    Result<S> Function(dynamic failure) onFailure,
   );
 }
 
@@ -127,20 +127,20 @@ class Success<S extends Object> implements Result<S> {
   int get hashCode => _success.hashCode;
 
   @override
-  bool operator ==(Object other) {
+  bool operator ==(dynamic other) {
     return other is Success && other._success == _success;
   }
 
   @override
   W fold<W>(
     W Function(S success) onSuccess,
-    W Function(Object error) onFailure,
+    W Function(dynamic error) onFailure,
   ) {
     return onSuccess(_success);
   }
 
   @override
-  Object? exceptionOrNull() => null;
+  dynamic exceptionOrNull() => null;
 
   @override
   S getOrNull() => _success;
@@ -152,7 +152,7 @@ class Success<S extends Object> implements Result<S> {
 
   @override
   Result<S> flatMapError<W extends Object>(
-    Result<S> Function(Object failure) fn,
+    Result<S> Function(dynamic failure) fn,
   ) {
     return Success<S>(_success);
   }
@@ -163,7 +163,7 @@ class Success<S extends Object> implements Result<S> {
   }
 
   @override
-  S getOrElse(S Function(Object failure) onFailure) {
+  S getOrElse(S Function(dynamic failure) onFailure) {
     return _success;
   }
 
@@ -177,7 +177,7 @@ class Success<S extends Object> implements Result<S> {
   }
 
   @override
-  Result<S> mapError<W extends Object>(W Function(Object error) fn) {
+  Result<S> mapError<W extends Object>(W Function(dynamic error) fn) {
     return Success<S>(_success);
   }
 
@@ -192,8 +192,8 @@ class Success<S extends Object> implements Result<S> {
   }
 
   @override
-  Result<S> recover<R extends Object>(
-    Result<S> Function(Object failure) onFailure,
+  Result<S> recover<R extends dynamic>(
+    Result<S> Function(dynamic failure) onFailure,
   ) {
     return Success(_success);
   }
@@ -202,7 +202,7 @@ class Success<S extends Object> implements Result<S> {
   AsyncResult<S> toAsyncResult() async => this;
 
   @override
-  Result<S> onFailure(void Function(Object failure) onFailure) {
+  Result<S> onFailure(void Function(dynamic failure) onFailure) {
     return this;
   }
 
@@ -223,7 +223,7 @@ class Failure<S extends Object> implements Result<S> {
   /// the error result.
   const Failure(this._failure);
 
-  final Object _failure;
+  final dynamic _failure;
 
   @override
   bool isError() => true;
@@ -235,19 +235,19 @@ class Failure<S extends Object> implements Result<S> {
   int get hashCode => _failure.hashCode;
 
   @override
-  bool operator ==(Object other) => //
+  bool operator ==(dynamic other) => //
       other is Failure && other._failure == _failure;
 
   @override
   W fold<W>(
     W Function(S succcess) onSuccess,
-    W Function(Object failure) onFailure,
+    W Function(dynamic failure) onFailure,
   ) {
     return onFailure(_failure);
   }
 
   @override
-  Object exceptionOrNull() => _failure;
+  dynamic exceptionOrNull() => _failure;
 
   @override
   S? getOrNull() => null;
@@ -259,7 +259,7 @@ class Failure<S extends Object> implements Result<S> {
 
   @override
   Result<S> flatMapError<W extends Object>(
-    Result<S> Function(Object failure) fn,
+    Result<S> Function(dynamic failure) fn,
   ) {
     return fn(_failure);
   }
@@ -270,7 +270,7 @@ class Failure<S extends Object> implements Result<S> {
   }
 
   @override
-  S getOrElse(S Function(Object failure) onFailure) {
+  S getOrElse(S Function(dynamic failure) onFailure) {
     return onFailure(_failure);
   }
 
@@ -283,7 +283,7 @@ class Failure<S extends Object> implements Result<S> {
   }
 
   @override
-  Result<S> mapError<W extends Object>(W Function(Object failure) fn) {
+  Result<S> mapError<W extends Object>(W Function(dynamic failure) fn) {
     final newFailure = fn(_failure);
     return Failure(newFailure);
   }
@@ -299,8 +299,8 @@ class Failure<S extends Object> implements Result<S> {
   }
 
   @override
-  Result<S> recover<R extends Object>(
-    Result<S> Function(Object failure) onFailure,
+  Result<S> recover<R extends dynamic>(
+    Result<S> Function(dynamic failure) onFailure,
   ) {
     return onFailure(_failure);
   }
@@ -309,7 +309,7 @@ class Failure<S extends Object> implements Result<S> {
   AsyncResult<S> toAsyncResult() async => this;
 
   @override
-  Result<S> onFailure(void Function(Object failure) onFailure) {
+  Result<S> onFailure(void Function(dynamic failure) onFailure) {
     onFailure(_failure);
     return this;
   }
