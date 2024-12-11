@@ -1,4 +1,4 @@
-include: package:flutterando_analysis/flutter_package.yaml
+include: package:flutterando_analysis/dart.yaml
 
 linter:
   rules:

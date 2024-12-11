@@ -2,6 +2,8 @@ import 'package:result_dart/functions.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:test/test.dart';
 
+import 'result_test.dart';
+
 void main() {
   group('flatMap', () {
     test('async ', () async {
@@ -21,17 +23,17 @@ void main() {
 
   group('flatMapError', () {
     test('async ', () async {
-      final result = await const Failure(1) //
+      final result = await const Failure(MyException('error')) //
           .toAsyncResult()
-          .flatMapError((error) async => Failure((error as int) * 2));
-      expect(result.exceptionOrNull(), 2);
+          .flatMapError((error) async => const Failure(MyException('mapped')));
+      expect(result.exceptionOrNull(), const MyException('mapped'));
     });
 
     test('sink', () async {
-      final result = await const Failure(1) //
+      final result = await const Failure(MyException('error')) //
           .toAsyncResult()
-          .flatMapError((error) => Failure((error as int) * 2));
-      expect(result.exceptionOrNull(), 2);
+          .flatMapError((error) => const Failure(MyException('mapped')));
+      expect(result.exceptionOrNull(), const MyException('mapped'));
     });
   });
 
@@ -41,15 +43,15 @@ void main() {
         .map((success) => success * 2);
 
     expect(result.getOrNull(), 2);
-    expect(const Failure(2).toAsyncResult().map(identity), completes);
+    expect(const Failure(MyException('mapped')).toAsyncResult().map(identity), completes);
   });
 
   test('mapError', () async {
-    final result = await const Failure(1) //
+    final result = await const Failure(MyException('error')) //
         .toAsyncResult()
-        .mapError((error) => (error as int) * 2);
-    expect(result.exceptionOrNull(), 2);
-    expect(const Success(2).toAsyncResult().mapError<Object>((e) => identity<Object>(e)), completes);
+        .mapError((error) => const MyException('mapped'));
+    expect(result.exceptionOrNull(), const MyException('mapped'));
+    expect(const Success(2).toAsyncResult().mapError((e) => identity<Exception>(e)), completes);
   });
 
   test('pure', () async {
@@ -58,9 +60,9 @@ void main() {
     expect(result.getOrNull(), 10);
   });
   test('pureError', () async {
-    final result = await const Failure(1).toAsyncResult().pureError(10);
+    final result = await const Failure(MyException('error')).toAsyncResult().pureError(const MyException('pure'));
 
-    expect(result.exceptionOrNull(), 10);
+    expect(result.exceptionOrNull(), const MyException('pure'));
   });
 
   group('fold', () {
@@ -71,9 +73,9 @@ void main() {
     });
 
     test('Error', () async {
-      final result = const Failure<String>(0).toAsyncResult();
+      final result = const Failure<String>(MyException('mapped')).toAsyncResult();
       final futureValue = result.fold(identity, (e) => e);
-      expect(futureValue, completion(0));
+      expect(futureValue, completion(const MyException('mapped')));
     });
   });
 
@@ -86,10 +88,10 @@ void main() {
     });
 
     test('Error', () async {
-      final result = const Failure<String>(0).toAsyncResult();
+      final result = const Failure<String>(MyException('mapped')).toAsyncResult();
 
       expect(result.isError(), completion(true));
-      expect(result.exceptionOrNull(), completion(0));
+      expect(result.exceptionOrNull(), completion(const MyException('mapped')));
     });
   });
 
@@ -100,8 +102,8 @@ void main() {
     });
 
     test('Error', () {
-      final result = const Failure<String>(0).toAsyncResult();
-      expect(result.getOrThrow(), throwsA(0));
+      final result = const Failure<String>(MyException('mapped')).toAsyncResult();
+      expect(result.getOrThrow(), throwsA(const MyException('mapped')));
     });
   });
 
@@ -113,7 +115,7 @@ void main() {
     });
 
     test('Error', () {
-      final result = const Failure<int>(0).toAsyncResult();
+      final result = const Failure<int>(MyException('mapped')).toAsyncResult();
       final value = result.getOrElse((f) => 2);
       expect(value, completion(2));
     });
@@ -127,7 +129,7 @@ void main() {
     });
 
     test('Error', () {
-      final result = const Failure<int>(0).toAsyncResult();
+      final result = const Failure<int>(MyException('mapped')).toAsyncResult();
       final value = result.getOrDefault(2);
       expect(value, completion(2));
     });
@@ -142,7 +144,7 @@ void main() {
     });
 
     test('Error', () {
-      final result = const Failure<int>('failure') //
+      final result = const Failure<int>(MyException('mapped')) //
           .toAsyncResult()
           .recover((f) => const Success(1));
       expect(result.getOrThrow(), completion(1));
@@ -164,13 +166,13 @@ void main() {
     });
 
     test('Error', () {
-      const Failure<int>('failure') //
+      const Failure<int>(MyException('mapped')) //
           .toAsyncResult()
           .onSuccess((success) {})
           .onFailure(
         expectAsync1(
           (value) {
-            expect(value, 'failure');
+            expect(value, const MyException('mapped'));
           },
         ),
       );

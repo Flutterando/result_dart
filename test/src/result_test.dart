@@ -24,15 +24,6 @@ void main() {
       final result = fn();
       expect(result.getOrNull(), unit);
     });
-
-    test('Error.unit type infer', () {
-      Result<String> fn() {
-        return const Failure(unit);
-      }
-
-      final result = fn();
-      expect(result.exceptionOrNull(), unit);
-    });
   });
 
   test('Result.success', () {
@@ -41,8 +32,8 @@ void main() {
   });
 
   test('Result.error', () {
-    const result = Result.failure(0);
-    expect(result.exceptionOrNull(), 0);
+    const result = Result.failure(MyException('error'));
+    expect(result.exceptionOrNull(), isA<MyException>());
   });
 
   test('''
@@ -94,8 +85,10 @@ Given a success result,
     expect(const Success(1) == const Success(1), isTrue);
     expect(const Success(1).hashCode == const Success(1).hashCode, isTrue);
 
-    expect(const Failure(1) == const Failure(1), isTrue);
-    expect(const Failure(1).hashCode == const Failure(1).hashCode, isTrue);
+    const exception = MyException('error');
+
+    expect(const Failure(exception) == const Failure(exception), isTrue);
+    expect(const Failure(exception).hashCode == const Failure(exception).hashCode, isTrue);
   });
 
   group('Map', () {
@@ -107,29 +100,29 @@ Given a success result,
     });
 
     test('Error', () {
-      final result = failureOf<String>(4);
+      final result = failureOf<String>(const MyException('error'));
       final result2 = result.map((success) => 'change');
 
       expect(result2.getOrNull(), isNull);
-      expect(result2.exceptionOrNull(), 4);
+      expect(result2.exceptionOrNull(), isA<MyException>());
     });
   });
 
   group('MapError', () {
     test('Success', () {
       const result = Success<int>(4);
-      final result2 = result.mapError((error) => '=' * (error as int));
+      final result2 = result.mapError((error) => const MyException('mapped'));
 
       expect(result2.getOrNull(), 4);
       expect(result2.exceptionOrNull(), isNull);
     });
 
     test('Error', () {
-      const result = Failure<String>(4);
-      final result2 = result.mapError((error) => 'change');
+      const result = Failure<String>(MyException('error'));
+      final result2 = result.mapError((error) => const MyException('mapped'));
 
       expect(result2.getOrNull(), isNull);
-      expect(result2.exceptionOrNull(), 'change');
+      expect(result2.exceptionOrNull(), const MyException('mapped'));
     });
   });
 
@@ -142,20 +135,20 @@ Given a success result,
     });
 
     test('Error', () {
-      const result = Failure<String>(4);
+      const result = Failure<String>(MyException('mapped'));
       final result2 = result.flatMap(Success.new);
 
       expect(result2.getOrNull(), isNull);
-      expect(result2.exceptionOrNull(), 4);
+      expect(result2.exceptionOrNull(), const MyException('mapped'));
     });
   });
 
   group('flatMapError', () {
     test('Error', () {
-      const result = Failure<int>(4);
-      final result2 = result.flatMapError((error) => Failure('=' * (error as int)));
+      const result = Failure<int>(MyException('error'));
+      final result2 = result.flatMapError((error) => const Failure(MyException('mapped')));
 
-      expect(result2.exceptionOrNull(), '====');
+      expect(result2.exceptionOrNull(), const MyException('mapped'));
     });
 
     test('Success', () {
@@ -177,24 +170,23 @@ Given a success result,
     });
 
     test('Error', () {
-      final result = const Failure<String>(4).pure(6);
+      final result = const Failure<String>(MyException('mapped')).pure(6);
 
       expect(result.getOrNull(), isNull);
-      expect(result.exceptionOrNull(), 4);
+      expect(result.exceptionOrNull(), const MyException('mapped'));
     });
   });
 
   group('pureError', () {
     test('Error', () {
-      final result = const Failure<int>(4) //
-          .pureError(6)
-          .mapError((error) => '=' * (error as int));
+      final result = const Failure<int>(MyException('error')) //
+          .pureError(const MyException('pure'));
 
-      expect(result.exceptionOrNull(), '======');
+      expect(result.exceptionOrNull(), const MyException('pure'));
     });
 
     test('Success', () {
-      final result = const Success<int>(4).pureError(6);
+      final result = const Success<int>(4).pureError(const MyException('mapped'));
 
       expect(result.exceptionOrNull(), isNull);
       expect(result.getOrNull(), 4);
@@ -215,9 +207,9 @@ Given a success result,
     });
 
     test('Error', () {
-      const result = Failure<String>(0);
+      const result = Failure<String>(MyException('mapped'));
       final futureValue = result.fold((success) => -1, identity);
-      expect(futureValue, 0);
+      expect(futureValue, const MyException('mapped'));
     });
   });
 
@@ -228,8 +220,8 @@ Given a success result,
     });
 
     test('Error', () {
-      const result = Failure<String>(0);
-      expect(result.getOrThrow, throwsA(0));
+      const result = Failure<String>(MyException('mapped'));
+      expect(result.getOrThrow, throwsA(const MyException('mapped')));
     });
   });
 
@@ -241,7 +233,7 @@ Given a success result,
     });
 
     test('Error', () {
-      const result = Failure<int>(0);
+      const result = Failure<int>(MyException('mapped'));
       final value = result.getOrElse((f) => 2);
       expect(value, 2);
     });
@@ -255,7 +247,7 @@ Given a success result,
     });
 
     test('Error', () {
-      const result = Failure<int>(0);
+      const result = Failure<int>(MyException('mapped'));
       final value = result.getOrDefault(2);
       expect(value, 2);
     });
@@ -269,7 +261,7 @@ Given a success result,
     });
 
     test('Error', () {
-      final result = const Failure<int>('failure') //
+      final result = const Failure<int>(MyException('mapped')) //
           .recover((f) => const Success(1));
       expect(result.getOrThrow(), 1);
     });

@@ -12,7 +12,7 @@
 
   <p align="center">
     This package aims to create an implemetation of <b>Kotlin's and Swift's Result class and own operators</b>.
-    Inspired by Higor Lapa's <a href='https://pub.dev/packages/multiple_result'>multiple_result</a> package, the `dartz` package and the `fpdart` package.  
+    Inspired by <a href='https://pub.dev/packages/multiple_result'>multiple_result</a> package, the `dartz` package and the `fpdart` package.  
     <br />
     <!-- Put the link for the documentation here -->
     <a href="https://pub.dev/documentation/result_dart/latest/"><strong>Explore the docs »</strong></a>
@@ -85,17 +85,6 @@ But the other layers of code need to know about the two main values `[Success, F
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- SPONSORS -->
-<!-- For now FTeam is the only sponsor for Flutterando packages. The community is open to more support for it's open source endeavors, so check it out and make contact with us through the links provided at the end -->
-## Sponsors
-
-<a href="https://fteam.dev">
-    <img src="https://raw.githubusercontent.com/Flutterando/README-Template/master/readme_assets/sponsor-logo.png" alt="Logo" width="120">
-  </a>
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-<br>
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -126,10 +115,10 @@ In the return of a function that you want to receive an answer as Sucess or Fail
 Result getSomethingPretty();
 ```
 
-then add the Success and the Failure types.
+then add the Success type. Failure type is `Exception`
 
 ```dart
-Result<String, Exception> getSomethingPretty() {
+Result<String> getSomethingPretty() {
 
 }
 

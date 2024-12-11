@@ -2,31 +2,22 @@ import 'package:result_dart/src/result.dart';
 import 'package:result_dart/src/result_extension.dart';
 import 'package:test/test.dart';
 
+import 'result_test.dart';
+
 void main() {
   group('toError', () {
     test('without result type', () {
-      final result = 'error'.toFailure();
+      final result = const MyException('mapped').toFailure();
 
       expect(result, isA<Result<dynamic>>());
-      expect(result.exceptionOrNull(), isA<String>());
-      expect(result.exceptionOrNull(), 'error');
+      expect(result.exceptionOrNull(), isA<MyException>());
     });
 
     test('with result type', () {
-      final Result<int> result = 'error'.toFailure();
+      final Result<int> result = const MyException('mapped').toFailure();
 
       expect(result, isA<Result<int>>());
-      expect(result.exceptionOrNull(), isA<String>());
-      expect(result.exceptionOrNull(), 'error');
-    });
-
-    test('throw AssertException if is a Result object', () {
-      final Result<int> result = 'error'.toFailure();
-      expect(result.toFailure, throwsA(isA<AssertionError>()));
-    });
-
-    test('throw AssertException if is a Future object', () {
-      expect(Future.value().toFailure, throwsA(isA<AssertionError>()));
+      expect(result.exceptionOrNull(), isA<MyException>());
     });
   });
 

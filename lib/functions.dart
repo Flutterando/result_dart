@@ -44,6 +44,6 @@ Result<S> successOf<S extends Object>(S success) {
 }
 
 /// Build a [Result] that returns a [Failure].
-Result<S> failureOf<S extends Object>(Object failure) {
+Result<S> failureOf<S extends Object>(Exception failure) {
   return Result<S>.failure(failure);
 }
