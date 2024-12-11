@@ -11,13 +11,13 @@ void main(List<String> args) {
   print('CPF Validator: ${result.isSuccess()}');
 }
 
-Result<String, ValidatorException> getTerminalInput() {
+Result<String> getTerminalInput() {
   final text = stdin.readLineSync();
   if (text == null || text.isEmpty) {
-    return const Result.failure(ValidatorException('Incorrect input'));
+    return const Failure(ValidatorException('Incorrect input'));
   }
 
-  return Result.success(text);
+  return Success(text);
 }
 
 String removeSpecialCharacteres(String input) {
@@ -25,28 +25,28 @@ String removeSpecialCharacteres(String input) {
   return input.replaceAll(reg, '');
 }
 
-Result<List<int>, ValidatorException> parseNumbers(String input) {
+Result<List<int>> parseNumbers(String input) {
   if (input.isEmpty) {
-    return const Result.failure(ValidatorException('Input is Empty'));
+    return const Failure(ValidatorException('Input is Empty'));
   }
 
   try {
-    final list = input.split('').map((e) => int.parse(e)).toList();
-    return Result.success(list);
+    final list = input.split('').map(int.parse).toList();
+    return Success(list);
   } catch (e) {
-    return const Result.failure(ValidatorException('Parse error'));
+    return const Failure(ValidatorException('Parse error'));
   }
 }
 
 bool validateCPF(List<int> numberDigits) {
   final secondRef = numberDigits.removeLast();
-  final int secondDigit = calculateDigit(numberDigits);
+  final secondDigit = calculateDigit(numberDigits);
   if (secondRef != secondDigit) {
     return false;
   }
 
   final firstRef = numberDigits.removeLast();
-  final int firstDigit = calculateDigit(numberDigits);
+  final firstDigit = calculateDigit(numberDigits);
   return firstRef == firstDigit;
 }
 

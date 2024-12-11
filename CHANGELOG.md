@@ -1,3 +1,48 @@
+## [2.0.0] - 2024-12-11
+
+- This version aims to reduce the `Result` boilerplate by making the `Failure` type Exception by default. This will free the Result from having to type `Failure`, making the declaration smaller.
+
+If there is a need to type `Failure`, use `ResultDart`.
+
+### Added
+- Introduced `typedef` for `Result<S>` and `AsyncResult<S>` to simplify usage:
+  - `Result<S>` is a simplified alias for `ResultDart<S, Exception>`.
+  - `AsyncResult<S>` is a simplified alias for `AsyncResultDart<S, Exception>`.
+
+### Changed
+- Replaced `Result` class with `ResultDart` as the base class for all results.
+  - Default failure type for `ResultDart` is now `Exception`.
+  - This change reduces boilerplate and improves usability by eliminating the need to specify the failure type explicitly in most cases.
+
+### Removed
+
+- Remove factories `Result.success` and `Result.failure`.
+
+
+### Migration Guide
+- In version >=2.0.0, the Failure typing is by default an `Exception`, but if there is a need to type it, use `ResultDart<Success, Failure>`.
+
+only `Success` type:
+```dart
+// Old
+Result<int, Exception> myResult = Success(42);
+
+// NEW
+Result<int> myResult = Success(42);
+
+```
+
+with `Success` and `Failure` types:
+```dart
+// Old
+Result<int, String> myResult = Success(42);
+
+// NEW
+ResultDart<int, String> myResult = Success(42);
+
+```
+
+
 ## [1.1.1] - 2023-07-05
 
 * pump Dart version to 3.0.0

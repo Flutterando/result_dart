@@ -1,4 +1,4 @@
-import 'package:result_dart/src/result.dart';
+import 'package:result_dart/src/result_dart_base.dart';
 import 'package:result_dart/src/result_extension.dart';
 import 'package:test/test.dart';
 
@@ -7,21 +7,21 @@ void main() {
     test('without result type', () {
       final result = 'error'.toFailure();
 
-      expect(result, isA<Result<dynamic, String>>());
+      expect(result, isA<ResultDart<dynamic, String>>());
       expect(result.exceptionOrNull(), isA<String>());
       expect(result.exceptionOrNull(), 'error');
     });
 
     test('with result type', () {
-      final Result<int, String> result = 'error'.toFailure();
+      final ResultDart<int, String> result = 'error'.toFailure();
 
-      expect(result, isA<Result<int, String>>());
+      expect(result, isA<ResultDart<int, String>>());
       expect(result.exceptionOrNull(), isA<String>());
       expect(result.exceptionOrNull(), 'error');
     });
 
     test('throw AssertException if is a Result object', () {
-      final Result<int, String> result = 'error'.toFailure();
+      final ResultDart<int, String> result = 'error'.toFailure();
       expect(result.toFailure, throwsA(isA<AssertionError>()));
     });
 
@@ -34,14 +34,14 @@ void main() {
     test('without result type', () {
       final result = 'success'.toSuccess();
 
-      expect(result, isA<Result<String, dynamic>>());
+      expect(result, isA<ResultDart<String, dynamic>>());
       expect(result.getOrNull(), 'success');
     });
 
     test('with result type', () {
-      final Result<String, int> result = 'success'.toSuccess();
+      final ResultDart<String, int> result = 'success'.toSuccess();
 
-      expect(result, isA<Result<String, int>>());
+      expect(result, isA<ResultDart<String, int>>());
       expect(result.getOrNull(), 'success');
     });
 
