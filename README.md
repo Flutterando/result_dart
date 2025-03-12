@@ -85,6 +85,12 @@ But the other layers of code need to know about the two main values `[Success, F
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## Sponsors
+
+<a href="https://www.nzest.co/">
+    <img src="https://media.discordapp.net/attachments/1328774070866673715/1349417416337391678/nZest-logo-2.png?ex=67d30667&is=67d1b4e7&hm=3e4c5e2a57a6dbe1463aa7d6fe8546c1dfa7ab67ff683bed13fa07ff88ffb58b&=&format=webp&quality=lossless&width=1723&height=918" alt="Logo" width="200">
+  </a>
+
 ## Migrate 1.1.1 to 2.0.0
 
 This version aims to reduce the `Result` boilerplate by making the `Failure` type Exception by default. This will free the Result from having to type `Failure`, making the declaration smaller.
