@@ -12,7 +12,7 @@ jobs:
 
       - uses: dart-lang/setup-dart@v1.3
         with:
-          sdk: 3.18.0
+          sdk: stable
       - name: Install dependencies
         run: dart pub get
 
