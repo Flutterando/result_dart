@@ -199,7 +199,7 @@ Given a success result,
   test('toAsyncResult', () {
     const result = Success(0);
 
-    expect(result.toAsyncResult(), isA<AsyncResult>());
+    expect(result.toAsyncResult(), isA<Future<ResultDart<int, Object>>>());
   });
 
   group('swap', () {
