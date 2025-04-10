@@ -143,4 +143,24 @@ extension AsyncResultDartExtension<S extends Object, F extends Object> //
   AsyncResultDart<S, F> onSuccess(void Function(S success) onSuccess) {
     return then((result) => result.onSuccess(onSuccess));
   }
+
+  /// Returns the encapsulated value if this instance represents `Success`
+  /// or the result of `onFailure` function for
+  /// the encapsulated a `Failure` value.
+  AsyncResultDart<G, W> pureFold<G extends Object, W extends Object>(
+    G success,
+    W failure,
+  ) {
+    return then((result) => result.pureFold(success, failure));
+  }
+
+  /// Returns the encapsulated value if this instance represents `Success`
+  /// or the result of `onFailure` function for
+  /// the encapsulated a `Failure` value.
+  AsyncResultDart<G, W> mapFold<G extends Object, W extends Object>(
+    G Function(S success) onSuccess,
+    W Function(F error) onError,
+  ) {
+    return then((result) => result.mapFold(onSuccess, onError));
+  }
 }

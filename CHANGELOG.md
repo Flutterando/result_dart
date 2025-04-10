@@ -1,3 +1,7 @@
+## [2.1.0] - 2025-04-10
+
+- Added `pureFold` and `mapFold` operators.
+
 ## [2.0.0] - 2024-12-11
 
 - This version aims to reduce the `Result` boilerplate by making the `Failure` type Exception by default. This will free the Result from having to type `Failure`, making the declaration smaller.

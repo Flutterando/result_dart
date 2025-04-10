@@ -92,6 +92,24 @@ sealed class ResultDart<S extends Object, F extends Object> {
   ResultDart<S, R> recover<R extends Object>(
     ResultDart<S, R> Function(F failure) onFailure,
   );
+
+  /// Returns a new `Result`, mapping any `Success` value
+  /// using the given transformation and unwrapping the produced `Result`.
+  /// Returns a new `Result`, mapping any `Error` value
+  /// using the given transformation and unwrapping the produced `Result`.
+  ResultDart<G, W> pureFold<G extends Object, W extends Object>(
+    G success,
+    W failure,
+  );
+
+  /// Returns a new `Result`, mapping any `Success` value
+  /// using the given transformation and unwrapping the produced `Result`.
+  /// Returns a new `Result`, mapping any `Error` value
+  /// using the given transformation and unwrapping the produced `Result`.
+  ResultDart<G, W> mapFold<G extends Object, W extends Object>(
+    G Function(S success) onSuccess,
+    W Function(F failure) onFailure,
+  );
 }
 
 /// Success Result.
@@ -219,6 +237,28 @@ final class Success<S extends Object, F extends Object> //
     onSuccess(_success);
     return this;
   }
+
+  @override
+  ResultDart<G, W> mapFold<G extends Object, W extends Object>(
+    G Function(S success) onSuccess,
+    W Function(F failure) onFailure,
+  ) {
+    return fold(
+      (s) => Success(onSuccess(s)),
+      (f) => Failure(onFailure(f)),
+    );
+  }
+
+  @override
+  ResultDart<G, W> pureFold<G extends Object, W extends Object>(
+    G success,
+    W failure,
+  ) {
+    return fold(
+      (s) => Success(success),
+      (f) => Failure(failure),
+    );
+  }
 }
 
 /// Error Result.
@@ -342,5 +382,27 @@ final class Failure<S extends Object, F extends Object> //
   @override
   ResultDart<S, F> onSuccess(void Function(S success) onSuccess) {
     return this;
+  }
+
+  @override
+  ResultDart<G, W> mapFold<G extends Object, W extends Object>(
+    G Function(S success) onSuccess,
+    W Function(F failure) onFailure,
+  ) {
+    return fold(
+      (s) => Success(onSuccess(s)),
+      (f) => Failure(onFailure(f)),
+    );
+  }
+
+  @override
+  ResultDart<G, W> pureFold<G extends Object, W extends Object>(
+    G success,
+    W failure,
+  ) {
+    return fold(
+      (s) => Success(success),
+      (f) => Failure(failure),
+    );
   }
 }
