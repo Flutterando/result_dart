@@ -7,7 +7,7 @@ import 'unit.dart' as type_unit;
 ///
 /// Receives two values [F] and [S]
 /// as [F] is an error and [S] is a success.
-sealed class ResultDart<S extends Object, F extends Object> {
+sealed class ResultDart<S, F> {
   /// Returns the success value as a throwing expression.
   S getOrThrow();
 
@@ -55,29 +55,29 @@ sealed class ResultDart<S extends Object, F extends Object> {
 
   /// Returns a new `Result`, mapping any `Success` value
   /// using the given transformation.
-  ResultDart<W, F> map<W extends Object>(W Function(S success) fn);
+  ResultDart<W, F> map<W>(W Function(S success) fn);
 
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation.
-  ResultDart<S, W> mapError<W extends Object>(W Function(F error) fn);
+  ResultDart<S, W> mapError<W>(W Function(F error) fn);
 
   /// Returns a new `Result`, mapping any `Success` value
   /// using the given transformation and unwrapping the produced `Result`.
-  ResultDart<W, F> flatMap<W extends Object>(
+  ResultDart<W, F> flatMap<W>(
     ResultDart<W, F> Function(S success) fn,
   );
 
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation and unwrapping the produced `Result`.
-  ResultDart<S, W> flatMapError<W extends Object>(
+  ResultDart<S, W> flatMapError<W>(
     ResultDart<S, W> Function(F error) fn,
   );
 
   /// Change the [Success] value.
-  ResultDart<W, F> pure<W extends Object>(W success);
+  ResultDart<W, F> pure<W>(W success);
 
   /// Change the [Failure] value.
-  ResultDart<S, W> pureError<W extends Object>(W error);
+  ResultDart<S, W> pureError<W>(W error);
 
   /// Return a [AsyncResult].
   AsyncResultDart<S, F> toAsyncResult();
@@ -89,7 +89,7 @@ sealed class ResultDart<S extends Object, F extends Object> {
   /// Returns the encapsulated `Result` of the given transform function
   /// applied to the encapsulated a `Failure` or the original
   /// encapsulated value if it is success.
-  ResultDart<S, R> recover<R extends Object>(
+  ResultDart<S, R> recover<R>(
     ResultDart<S, R> Function(F failure) onFailure,
   );
 
@@ -97,7 +97,7 @@ sealed class ResultDart<S extends Object, F extends Object> {
   /// using the given transformation and unwrapping the produced `Result`.
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation and unwrapping the produced `Result`.
-  ResultDart<G, W> pureFold<G extends Object, W extends Object>(
+  ResultDart<G, W> pureFold<G, W>(
     G success,
     W failure,
   );
@@ -106,7 +106,7 @@ sealed class ResultDart<S extends Object, F extends Object> {
   /// using the given transformation and unwrapping the produced `Result`.
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation and unwrapping the produced `Result`.
-  ResultDart<G, W> mapFold<G extends Object, W extends Object>(
+  ResultDart<G, W> mapFold<G, W>(
     G Function(S success) onSuccess,
     W Function(F failure) onFailure,
   );
@@ -117,7 +117,7 @@ sealed class ResultDart<S extends Object, F extends Object> {
 /// return it when the result of a [Result] is
 /// the expected value.
 @immutable
-final class Success<S extends Object, F extends Object> //
+final class Success<S, F> //
     implements
         ResultDart<S, F> {
   /// Receives the [S] param as
@@ -130,7 +130,7 @@ final class Success<S extends Object, F extends Object> //
   /// ```dart
   /// Success.unit() == Success(unit)
   /// ```
-  static Success<type_unit.Unit, F> unit<F extends Object>() {
+  static Success<type_unit.Unit, F> unit<F>() {
     return Success<type_unit.Unit, F>(type_unit.unit);
   }
 
@@ -165,14 +165,14 @@ final class Success<S extends Object, F extends Object> //
   S getOrNull() => _success;
 
   @override
-  ResultDart<W, F> flatMap<W extends Object>(
+  ResultDart<W, F> flatMap<W>(
     ResultDart<W, F> Function(S success) fn,
   ) {
     return fn(_success);
   }
 
   @override
-  ResultDart<S, W> flatMapError<W extends Object>(
+  ResultDart<S, W> flatMapError<W>(
     ResultDart<S, W> Function(F failure) fn,
   ) {
     return Success<S, W>(_success);
@@ -197,28 +197,28 @@ final class Success<S extends Object, F extends Object> //
   S getOrDefault(S defaultValue) => _success;
 
   @override
-  ResultDart<W, F> map<W extends Object>(W Function(S success) fn) {
+  ResultDart<W, F> map<W>(W Function(S success) fn) {
     final newSuccess = fn(_success);
     return Success<W, F>(newSuccess);
   }
 
   @override
-  ResultDart<S, W> mapError<W extends Object>(W Function(F error) fn) {
+  ResultDart<S, W> mapError<W>(W Function(F error) fn) {
     return Success<S, W>(_success);
   }
 
   @override
-  ResultDart<W, F> pure<W extends Object>(W success) {
+  ResultDart<W, F> pure<W>(W success) {
     return map((_) => success);
   }
 
   @override
-  ResultDart<S, W> pureError<W extends Object>(W error) {
+  ResultDart<S, W> pureError<W>(W error) {
     return Success<S, W>(_success);
   }
 
   @override
-  ResultDart<S, R> recover<R extends Object>(
+  ResultDart<S, R> recover<R>(
     ResultDart<S, R> Function(F failure) onFailure,
   ) {
     return Success(_success);
@@ -239,7 +239,7 @@ final class Success<S extends Object, F extends Object> //
   }
 
   @override
-  ResultDart<G, W> mapFold<G extends Object, W extends Object>(
+  ResultDart<G, W> mapFold<G, W>(
     G Function(S success) onSuccess,
     W Function(F failure) onFailure,
   ) {
@@ -250,7 +250,7 @@ final class Success<S extends Object, F extends Object> //
   }
 
   @override
-  ResultDart<G, W> pureFold<G extends Object, W extends Object>(
+  ResultDart<G, W> pureFold<G, W>(
     G success,
     W failure,
   ) {
@@ -266,7 +266,7 @@ final class Success<S extends Object, F extends Object> //
 /// return it when the result of a [ResultDart] is
 /// not the expected value.
 @immutable
-final class Failure<S extends Object, F extends Object> //
+final class Failure<S, F> //
     implements
         ResultDart<S, F> {
   /// Receives the [F] param as
@@ -277,7 +277,7 @@ final class Failure<S extends Object, F extends Object> //
   /// ```dart
   /// Failure.unit() == Failure(unit)
   /// ```
-  static Failure<S, type_unit.Unit> unit<S extends Object>() {
+  static Failure<S, type_unit.Unit> unit<S>() {
     return Failure<S, type_unit.Unit>(type_unit.unit);
   }
 
@@ -311,14 +311,14 @@ final class Failure<S extends Object, F extends Object> //
   S? getOrNull() => null;
 
   @override
-  ResultDart<W, F> flatMap<W extends Object>(
+  ResultDart<W, F> flatMap<W>(
     ResultDart<W, F> Function(S success) fn,
   ) {
     return Failure<W, F>(_failure);
   }
 
   @override
-  ResultDart<S, W> flatMapError<W extends Object>(
+  ResultDart<S, W> flatMapError<W>(
     ResultDart<S, W> Function(F failure) fn,
   ) {
     return fn(_failure);
@@ -331,7 +331,7 @@ final class Failure<S extends Object, F extends Object> //
 
   @override
   S getOrThrow() {
-    throw _failure;
+    throw _failure!;
   }
 
   @override
@@ -343,28 +343,28 @@ final class Failure<S extends Object, F extends Object> //
   S getOrDefault(S defaultValue) => defaultValue;
 
   @override
-  ResultDart<W, F> map<W extends Object>(W Function(S success) fn) {
+  ResultDart<W, F> map<W>(W Function(S success) fn) {
     return Failure<W, F>(_failure);
   }
 
   @override
-  ResultDart<S, W> mapError<W extends Object>(W Function(F failure) fn) {
+  ResultDart<S, W> mapError<W>(W Function(F failure) fn) {
     final newFailure = fn(_failure);
     return Failure(newFailure);
   }
 
   @override
-  ResultDart<W, F> pure<W extends Object>(W success) {
+  ResultDart<W, F> pure<W>(W success) {
     return Failure<W, F>(_failure);
   }
 
   @override
-  ResultDart<S, W> pureError<W extends Object>(W error) {
+  ResultDart<S, W> pureError<W>(W error) {
     return mapError((failure) => error);
   }
 
   @override
-  ResultDart<S, R> recover<R extends Object>(
+  ResultDart<S, R> recover<R>(
     ResultDart<S, R> Function(F failure) onFailure,
   ) {
     return onFailure(_failure);
@@ -385,7 +385,7 @@ final class Failure<S extends Object, F extends Object> //
   }
 
   @override
-  ResultDart<G, W> mapFold<G extends Object, W extends Object>(
+  ResultDart<G, W> mapFold<G, W>(
     G Function(S success) onSuccess,
     W Function(F failure) onFailure,
   ) {
@@ -396,7 +396,7 @@ final class Failure<S extends Object, F extends Object> //
   }
 
   @override
-  ResultDart<G, W> pureFold<G extends Object, W extends Object>(
+  ResultDart<G, W> pureFold<G, W>(
     G success,
     W failure,
   ) {

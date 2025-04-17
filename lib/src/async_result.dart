@@ -3,10 +3,10 @@ import 'dart:async';
 import '../result_dart.dart';
 
 /// `AsyncResultDart<S, E>` represents an asynchronous computation.
-typedef AsyncResultDart<S extends Object, F extends Object> = Future<ResultDart<S, F>>;
+typedef AsyncResultDart<S, F> = Future<ResultDart<S, F>>;
 
 /// `AsyncResultDart<S, E>` represents an asynchronous computation.
-extension AsyncResultDartExtension<S extends Object, F extends Object> //
+extension AsyncResultDartExtension<S, F> //
     on AsyncResultDart<S, F> {
   /// Returns a new `Result`, mapping any `Success` value
   /// using the given transformation and unwrapping the produced `Result`.
@@ -26,7 +26,7 @@ extension AsyncResultDartExtension<S extends Object, F extends Object> //
 
   /// Returns a new `AsyncResultDart`, mapping any `Success` value
   /// using the given transformation.
-  AsyncResultDart<W, F> map<W extends Object>(
+  AsyncResultDart<W, F> map<W>(
     FutureOr<W> Function(S success) fn,
   ) {
     return then(
@@ -43,7 +43,7 @@ extension AsyncResultDartExtension<S extends Object, F extends Object> //
 
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation.
-  AsyncResultDart<S, W> mapError<W extends Object>(
+  AsyncResultDart<S, W> mapError<W>(
     FutureOr<W> Function(F error) fn,
   ) {
     return then(
@@ -59,12 +59,12 @@ extension AsyncResultDartExtension<S extends Object, F extends Object> //
   }
 
   /// Change a [Success] value.
-  AsyncResultDart<W, F> pure<W extends Object>(W success) {
+  AsyncResultDart<W, F> pure<W>(W success) {
     return then((result) => result.pure(success));
   }
 
   /// Change the [Failure] value.
-  AsyncResultDart<S, W> pureError<W extends Object>(W error) {
+  AsyncResultDart<S, W> pureError<W>(W error) {
     return mapError((_) => error);
   }
 
@@ -125,7 +125,7 @@ extension AsyncResultDartExtension<S extends Object, F extends Object> //
   /// Returns the encapsulated `Result` of the given transform function
   /// applied to the encapsulated a `Failure` or the original
   /// encapsulated value if it is success.
-  AsyncResultDart<S, R> recover<R extends Object>(
+  AsyncResultDart<S, R> recover<R>(
     FutureOr<ResultDart<S, R>> Function(F failure) onFailure,
   ) {
     return then((result) => result.fold(Success.new, onFailure));
@@ -147,7 +147,7 @@ extension AsyncResultDartExtension<S extends Object, F extends Object> //
   /// Returns the encapsulated value if this instance represents `Success`
   /// or the result of `onFailure` function for
   /// the encapsulated a `Failure` value.
-  AsyncResultDart<G, W> pureFold<G extends Object, W extends Object>(
+  AsyncResultDart<G, W> pureFold<G, W>(
     G success,
     W failure,
   ) {
@@ -157,7 +157,7 @@ extension AsyncResultDartExtension<S extends Object, F extends Object> //
   /// Returns the encapsulated value if this instance represents `Success`
   /// or the result of `onFailure` function for
   /// the encapsulated a `Failure` value.
-  AsyncResultDart<G, W> mapFold<G extends Object, W extends Object>(
+  AsyncResultDart<G, W> mapFold<G, W>(
     G Function(S success) onSuccess,
     W Function(F error) onError,
   ) {

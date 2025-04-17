@@ -6,7 +6,7 @@ import 'package:result_dart/result_dart.dart';
 /// This is used to represent operations that can succeed with a
 /// value of type `S`
 /// or fail with an `Exception`.
-typedef Result<S extends Object> = ResultDart<S, Exception>;
+typedef Result<S> = ResultDart<S, Exception>;
 
 /// A typedef for an asynchronous `Result`, simplifying the usage
 /// of `AsyncResultDart`
@@ -15,4 +15,4 @@ typedef Result<S extends Object> = ResultDart<S, Exception>;
 /// This is used to represent asynchronous operations that can succeed
 /// with a value of type `S`
 /// or fail with an `Exception`.
-typedef AsyncResult<S extends Object> = AsyncResultDart<S, Exception>;
+typedef AsyncResult<S> = AsyncResultDart<S, Exception>;
