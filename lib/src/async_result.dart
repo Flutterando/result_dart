@@ -10,7 +10,7 @@ extension AsyncResultDartExtension<S, F> //
     on AsyncResultDart<S, F> {
   /// Returns a new `Result`, mapping any `Success` value
   /// using the given transformation and unwrapping the produced `Result`.
-  AsyncResultDart<W, F> flatMap<W extends Object>(
+  AsyncResultDart<W, F> flatMap<W>(
     FutureOr<ResultDart<W, F>> Function(S success) fn,
   ) {
     return then((result) => result.fold(fn, Failure.new));
@@ -18,7 +18,7 @@ extension AsyncResultDartExtension<S, F> //
 
   /// Returns a new `Result`, mapping any `Error` value
   /// using the given transformation and unwrapping the produced `Result`.
-  AsyncResultDart<S, W> flatMapError<W extends Object>(
+  AsyncResultDart<S, W> flatMapError<W>(
     FutureOr<ResultDart<S, W>> Function(F error) fn,
   ) {
     return then((result) => result.fold(Success.new, fn));
