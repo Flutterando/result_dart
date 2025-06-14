@@ -1,4 +1,7 @@
-library result_dart;
+/// Library containing utility functions for working with ResultDart.
+///
+/// This library provides helper functions such as `identity`, `id`, `successOf`, and `failureOf`.
+library;
 
 import 'package:result_dart/result_dart.dart';
 

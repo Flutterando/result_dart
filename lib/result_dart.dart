@@ -1,4 +1,8 @@
-library result_dart;
+/// Library for ResultDart.
+///
+/// This library exports core components of ResultDart, including async results, base results,
+/// extensions, types, and utility classes.
+library;
 
 export 'src/async_result.dart';
 export 'src/result_dart_base.dart';

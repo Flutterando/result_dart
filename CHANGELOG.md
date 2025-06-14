@@ -1,3 +1,7 @@
+## [2.1.1] - 2025-06-14
+
+- Fix linter problems.
+
 ## [2.1.0] - 2025-04-10
 
 - Added `pureFold` and `mapFold` operators.

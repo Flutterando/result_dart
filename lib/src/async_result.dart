@@ -3,7 +3,8 @@ import 'dart:async';
 import '../result_dart.dart';
 
 /// `AsyncResultDart<S, E>` represents an asynchronous computation.
-typedef AsyncResultDart<S extends Object, F extends Object> = Future<ResultDart<S, F>>;
+typedef AsyncResultDart<S extends Object, F extends Object>
+    = Future<ResultDart<S, F>>;
 
 /// `AsyncResultDart<S, E>` represents an asynchronous computation.
 extension AsyncResultDartExtension<S extends Object, F extends Object> //
