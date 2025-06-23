@@ -165,3 +165,49 @@ extension AsyncResultDartExtension<S extends Object, F extends Object> //
     return then((result) => result.mapFold(onSuccess, onError));
   }
 }
+
+/// Extension on `Future<S>` to convert it into an `AsyncResultDart<S, Exception>`.
+///
+/// This extension provides a method `toAsyncResult` that wraps the result of a
+/// `Future` into a `Success` or `Failure` object. If the `Future` completes
+/// successfully, the result is wrapped in a `Success`. If an exception occurs,
+/// the exception is wrapped in a `Failure`.
+///
+/// Example usage:
+/// ```dart
+/// Future<int> future = Future.value(42);
+/// AsyncResultDart<int, Exception> result = await future.toAsyncResult();
+/// ```
+extension FutureResultExtension<S extends Object> on Future<S> {
+  AsyncResultDart<S, Exception> toAsyncResult() async {
+    try {
+      final value = await this;
+      return Success(value);
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+}
+
+/// Extension on `Future<void>` to convert it into an `AsyncResultDart<Unit, Exception>`.
+///
+/// This extension provides a method `toAsyncResult` that wraps the completion
+/// of a `Future<void>` into a `Success` or `Failure` object. If the `Future`
+/// completes successfully, a `Success` containing `unit` is returned. If an
+/// exception occurs, the exception is wrapped in a `Failure`.
+///
+/// Example usage:
+/// ```dart
+/// Future<void> future = Future.value();
+/// AsyncResultDart<Unit, Exception> result = await future.toAsyncResult();
+/// ```
+extension FutureResultExtensionVoid on Future<void> {
+  AsyncResultDart<Unit, Exception> toAsyncResult() async {
+    try {
+      await this;
+      return Success(unit);
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
+}
