@@ -3,7 +3,8 @@
 /// This library provides helper functions such as `identity`, `id`, `successOf`, and `failureOf`.
 library;
 
-import 'package:result_dart/result_dart.dart';
+import 'result_dart.dart';
+
 
 /// Returns the given `a`.
 ///
@@ -41,12 +42,12 @@ T identity<T>(T a) => a;
 /// ```
 T id<T>(T a) => a;
 
-/// Build a [Result] that returns a [Failure].
+/// Build a [ResultDart] that returns a [Success].
 ResultDart<S, F> successOf<S extends Object, F extends Object>(S success) {
   return Success<S, F>(success);
 }
 
-/// Build a [Result] that returns a [Failure].
+/// Build a [ResultDart] that returns a [Failure].
 ResultDart<S, F> failureOf<S extends Object, F extends Object>(F failure) {
   return Failure<S, F>(failure);
 }

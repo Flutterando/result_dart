@@ -1,4 +1,4 @@
-import 'package:result_dart/result_dart.dart';
+import '../result_dart.dart';
 
 /// A typedef for a `Result` that simplifies the usage of `ResultDart`
 /// with `Exception` as the default failure type.
