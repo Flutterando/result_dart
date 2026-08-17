@@ -165,15 +165,15 @@ extension AsyncResultDartExtension<S extends Object, F extends Object> //
     return then((result) => result.mapFold(onSuccess, onError));
   }
 
-  /// Performs the given action on this [Result] regardless of whether it
-  /// is a [Success] or [Failure]. Returns the original [Result] unchanged.
+  /// Performs the given action on this [ResultDart] regardless of whether it
+  /// is a [Success] or [Failure]. Returns the original [ResultDart] unchanged.
   ///
   /// Useful for debugging and logging intermediate states in a chain.
   AsyncResultDart<S, F> tap(void Function(ResultDart<S, F> result) fn) {
     return then((result) => result.tap(fn));
   }
 
-  /// Returns this [Result] if it is a [Failure] or if the [test] predicate
+  /// Returns this [ResultDart] if it is a [Failure] or if the [test] predicate
   /// returns `true` for the encapsulated [Success] value.
   /// Otherwise, returns a [Failure] created by [orElse].
   AsyncResultDart<S, F> filter(
@@ -183,7 +183,7 @@ extension AsyncResultDartExtension<S extends Object, F extends Object> //
     return then((result) => result.filter(test, orElse));
   }
 
-  /// Combines this [Result] with [other] into a single [Result]
+  /// Combines this [ResultDart] with [other] into a single [ResultDart]
   /// containing a `Record` of both success values.
   /// If either is a [Failure], returns the first [Failure] encountered.
   AsyncResultDart<(S, S2), F> zip<S2 extends Object>(
@@ -192,7 +192,7 @@ extension AsyncResultDartExtension<S extends Object, F extends Object> //
     return then((result) => result.zip(other));
   }
 
-  /// Returns the encapsulated [Result] of the given [onFailure] function
+  /// Returns the encapsulated [ResultDart] of the given [onFailure] function
   /// applied to the encapsulated [Failure] value only if [test] returns
   /// `true`. Otherwise, returns the original [Failure] unchanged.
   /// If this is a [Success], returns it unchanged.

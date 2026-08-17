@@ -1,6 +1,4 @@
-import 'package:meta/meta.dart';
-import 'package:result_dart/result_dart.dart';
-
+import '../result_dart.dart';
 import 'unit.dart' as type_unit;
 
 /// Base Result class
@@ -83,7 +81,7 @@ sealed class ResultDart<S extends Object, F extends Object> {
   AsyncResultDart<S, F> toAsyncResult();
 
   /// Swap the values contained inside the [Success] and [Failure]
-  /// of this [Result].
+  /// of this [ResultDart].
   ResultDart<F, S> swap();
 
   /// Returns the encapsulated `Result` of the given transform function
@@ -111,13 +109,13 @@ sealed class ResultDart<S extends Object, F extends Object> {
     W Function(F failure) onFailure,
   );
 
-  /// Performs the given action on this [Result] regardless of whether it
-  /// is a [Success] or [Failure]. Returns the original [Result] unchanged.
+  /// Performs the given action on this [ResultDart] regardless of whether it
+  /// is a [Success] or [Failure]. Returns the original [ResultDart] unchanged.
   ///
   /// Useful for debugging and logging intermediate states in a chain.
   ResultDart<S, F> tap(void Function(ResultDart<S, F> result) fn);
 
-  /// Returns this [Result] if it is a [Failure] or if the [test] predicate
+  /// Returns this [ResultDart] if it is a [Failure] or if the [test] predicate
   /// returns `true` for the encapsulated [Success] value.
   /// Otherwise, returns a [Failure] created by [orElse].
   ResultDart<S, F> filter(
@@ -125,12 +123,12 @@ sealed class ResultDart<S extends Object, F extends Object> {
     F Function(S success) orElse,
   );
 
-  /// Combines this [Result] with [other] into a single [Result]
+  /// Combines this [ResultDart] with [other] into a single [ResultDart]
   /// containing a `Record` of both success values.
   /// If either is a [Failure], returns the first [Failure] encountered.
   ResultDart<(S, S2), F> zip<S2 extends Object>(ResultDart<S2, F> other);
 
-  /// Returns the encapsulated [Result] of the given [onFailure] function
+  /// Returns the encapsulated [ResultDart] of the given [onFailure] function
   /// applied to the encapsulated [Failure] value only if [test] returns `true`.
   /// Otherwise, returns the original [Failure] unchanged.
   /// If this is a [Success], returns it unchanged.
@@ -142,9 +140,8 @@ sealed class ResultDart<S extends Object, F extends Object> {
 
 /// Success Result.
 ///
-/// return it when the result of a [Result] is
+/// return it when the result of a [ResultDart] is
 /// the expected value.
-@immutable
 final class Success<S extends Object, F extends Object> //
     implements
         ResultDart<S, F> {
@@ -329,7 +326,6 @@ final class Success<S extends Object, F extends Object> //
 ///
 /// return it when the result of a [ResultDart] is
 /// not the expected value.
-@immutable
 final class Failure<S extends Object, F extends Object> //
     implements
         ResultDart<S, F> {
